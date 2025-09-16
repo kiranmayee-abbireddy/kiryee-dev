@@ -212,6 +212,7 @@ const Projects: React.FC = () => {
                   className="w-full h-full border-0"
                   loading="lazy"
                   sandbox="allow-scripts allow-same-origin allow-forms"
+                  tabIndex={-1} // prevent focus
                 />
                 <a
                   href={project.link}
