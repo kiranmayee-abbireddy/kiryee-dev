@@ -74,6 +74,19 @@ const Header: React.FC = () => {
               {item.label}
             </motion.a>
           ))}
+          <motion.a
+            href="/Kiranmayee Abbireddy Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-xl bg-neutral-900 text-white text-sm font-medium 
+                      hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 
+                      transition-colors shadow-md"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            Resume
+          </motion.a>
           <motion.button
             onClick={toggleTheme}
             className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
@@ -129,6 +142,20 @@ const Header: React.FC = () => {
               ))}
             </nav>
           </motion.div>
+          <motion.a
+            href="/Kiranmayee Abbireddy Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xl font-medium px-4 py-2 rounded-lg bg-neutral-900 text-white 
+                      hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 
+                      transition-colors shadow-md"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: 0.7 }}
+          >
+            Resume
+        </motion.a>
+
         )}
       </div>
     </header>
