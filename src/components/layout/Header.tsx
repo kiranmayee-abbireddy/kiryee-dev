@@ -75,7 +75,7 @@ const Header: React.FC = () => {
             </motion.a>
           ))}
           <motion.a
-            href="/Kiranmayee Abbireddy Resume.pdf"
+            href="/Kiranmayee-Abbireddy-Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 rounded-xl bg-neutral-900 text-white text-sm font-medium 
@@ -143,7 +143,7 @@ const Header: React.FC = () => {
             </nav>
           </motion.div>
           <motion.a
-            href="/Kiranmayee Abbireddy Resume.pdf"
+            href="/Kiranmayee-Abbireddy-Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xl font-medium px-4 py-2 rounded-lg bg-neutral-900 text-white 
