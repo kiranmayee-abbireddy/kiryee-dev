@@ -21,10 +21,10 @@ const Projects: React.FC = () => {
   const projects: Project[] = [
     {
       id: 1,
-      title: 'DevLab OS',
+      title: 'Drift Notes',
       type: 'Tool',
-      description: 'Your personal logbook to track experiments, save dev resources, and fuel your technical curiosity.',
-      link: 'https://devlab-os.netlify.app/'
+      description: 'Catch the thought before it floats away.',
+      link: 'https://driftnotes.netlify.app/'
     },
     {
       id: 15,
@@ -112,10 +112,10 @@ const Projects: React.FC = () => {
     },
     {
       id: 2,
-      title: 'Mind Mirror',
+      title: 'Nope Pad',
       type: 'Tool',
-      description: 'Real-time chat interface that mimics your tone back to you to reflect thought patterns.',
-      link: 'https://kiranmayee-abbireddy.github.io/mind-mirror/'
+      description: 'Boundary-setting say no tracker',
+      link: 'https://nopepad.netlify.app/'
     },
     {
       id: 13,
