@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide default scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom minimalistic line scrollbar */
+.scroll-indicator {
+  position: fixed;
+  top: 0;
+  right: 4px;
+  width: 2px;
+  height: 100vh;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.scroll-line {
+  width: 100%;
+  background: #000;
+  border-radius: 1px;
+  transform-origin: top;
+  transition: all 0.1s ease-out;
+}
+
+.dark .scroll-line {
+  background: #fff;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom text selection colors that match theme */
+::selection {
+  background-color: #000;
+  color: #fff;
+}
+
+::-moz-selection {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Dark mode text selection */
+.dark ::selection {
+  background-color: #fff;
+  color: #000;
+}
+
+.dark ::-moz-selection {
+  background-color: #fff;
+  color: #000;
+}
