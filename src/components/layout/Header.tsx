@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Menu, X, Moon, Sun, FileDown } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 const Header: React.FC = () => {
@@ -75,17 +75,18 @@ const Header: React.FC = () => {
             </motion.a>
           ))}
           <motion.a
-              href="/Kiranmayee-Abbireddy-Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 rounded-xl bg-neutral-900 text-white text-sm font-medium 
-                        hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 
-                        transition-colors shadow-md"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-            >
-              Resume
+            href="/Kiranmayee-Abbireddy-Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download resume"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900 text-white text-sm font-medium 
+                      hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 
+                      transition-colors shadow-md"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            Resume <FileDown size={16} />
             </motion.a>
           <motion.button
             onClick={toggleTheme}
