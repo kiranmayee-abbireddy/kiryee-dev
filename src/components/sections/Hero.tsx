@@ -1,21 +1,26 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
+import CursorRevealBackground from '../ui/CursorRevealBackground';
 
 const Hero: React.FC = () => {
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
+    e.stopPropagation();
     const targetElement = document.querySelector(href);
     if (targetElement) {
       targetElement.scrollIntoView({ 
         behavior: 'smooth',
         block: 'start'
       });
+      // Update URL without triggering scroll
+      window.history.pushState(null, '', href);
     }
   };
 
   return (
-    <section id="home" className="h-screen flex items-center justify-center relative">
+    <section id="home" className="h-screen flex items-center justify-center relative overflow-hidden">
+      <CursorRevealBackground />
       <div className="container mx-auto px-6 h-full w-full flex justify-center items-center">
         <div className="max-w-4xl text-center">
           <motion.h1
