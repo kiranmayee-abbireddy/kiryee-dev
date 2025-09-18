@@ -2,9 +2,33 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
 const CursorRevealBackground: React.FC = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const { theme } = useTheme();
+
+  // Convert 3cm to pixels (approximately 113px at 96 DPI)
+  const revealRadius = 300;
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      if (!isVisible) setIsVisible(true);
+    };
+
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [isVisible]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -202,12 +226,48 @@ const CursorRevealBackground: React.FC = () => {
     };
   }, [theme]);
 
+  // Check if device supports hover (not touch device)
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  if (isTouchDevice) {
+    // Show full background on touch devices
+    return (
+      <div className="absolute inset-0 pointer-events-none">
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full opacity-30"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="absolute inset-0 pointer-events-none">
+      {/* Hidden canvas with the full background */}
       <canvas
         ref={canvasRef}
         className="w-full h-full opacity-40"
       />
+      
+      {/* Revealed background through cursor circle */}
+      <div
+        className="absolute inset-0 transition-opacity duration-300"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          background: `radial-gradient(circle ${revealRadius}px at ${mousePosition.x}px ${mousePosition.y}px, transparent 0%, transparent 70%, rgba(0,0,0,0) 100%)`,
+          maskImage: `radial-gradient(circle ${revealRadius}px at ${mousePosition.x}px ${mousePosition.y}px, black 0%, black 60%, transparent 80%, transparent 100%)`,
+          WebkitMaskImage: `radial-gradient(circle ${revealRadius}px at ${mousePosition.x}px ${mousePosition.y}px, black 0%, black 60%, transparent 80%, transparent 100%)`,
+        }}
+      >
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full opacity-60"
+        />
+      </div>
     </div>
   );
 };
