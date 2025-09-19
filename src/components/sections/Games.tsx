@@ -19,6 +19,13 @@ const Games: React.FC = () => {
 
   const games: Game[] = [
     {
+      id: 11,
+      title: 'Noct',
+      description: 'Restore the light to the world by collecting stars',
+      link: 'https://noctit.netlify.app/',
+      difficulty: 'Medium'
+    },
+    {
       id: 1,
       title: 'Letter Drop',
       description: 'A word-chain game where players stack and form a word like block blast.',
