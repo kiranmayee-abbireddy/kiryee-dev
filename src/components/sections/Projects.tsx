@@ -211,7 +211,7 @@ const Projects: React.FC = () => {
                   title={project.title}
                   className="w-full h-full border-0"
                   loading="lazy"
-                  sandbox="allow-same-origin"
+                  sandbox="allow-scripts allow-same-origin allow-forms"
                   tabIndex={-1} // prevent focus
                 />
                 <a
