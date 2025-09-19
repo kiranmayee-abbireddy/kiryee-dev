@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { ArrowUpRight, ExternalLink } from 'lucide-react';
 
 interface Project {
   id: number;
@@ -12,7 +13,10 @@ interface Project {
 
 const Projects: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   const projects: Project[] = [
     {
@@ -121,136 +125,134 @@ const Projects: React.FC = () => {
       link: 'https://kiranmayee-abbireddy.github.io/My-digital-art-gallery/'
     }
   ];
+  
+  const categories = Array.from(new Set(projects.map(project => project.type)));
 
-  const categories = Array.from(new Set(projects.map((p) => p.type)));
   const filteredProjects = selectedCategory
-    ? projects.filter((p) => p.type === selectedCategory)
+    ? projects.filter(project => project.type === selectedCategory)
     : projects;
 
   return (
-    <section id="projects" className="py-24 relative">
+    <section id="projects" className="py-24">
       <div className="container mx-auto px-6" ref={ref}>
-        {/* Section Header */}
         <div className="max-w-3xl mx-auto md:text-center mb-16">
-          <motion.p
+          <motion.p 
             className="text-sm font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-3"
             initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
+            animate={inView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
             Portfolio
           </motion.p>
-          <motion.h2
+          <motion.h2 
             className="text-3xl md:text-4xl font-bold tracking-tight mb-6"
             initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             Made with Purpose
           </motion.h2>
-          <motion.p
+          <motion.p 
             className="text-lg text-neutral-700 dark:text-neutral-300"
             initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             A showcase of tools and applications designed to enhance productivity and well-being.
           </motion.p>
         </div>
 
-        {/* Category Filters */}
-        <motion.div
+        <motion.div 
           className="flex flex-wrap justify-center gap-3 mb-12"
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <button
-            onClick={() => setSelectedCategory(null)}
             className={`px-4 py-2 text-sm rounded-full transition-colors ${
               selectedCategory === null
-                ? "bg-neutral-900 dark:bg-white text-white dark:text-neutral-900"
-                : "bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
+                : 'bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700'
             }`}
+            onClick={() => setSelectedCategory(null)}
           >
             All ({projects.length})
           </button>
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 text-sm rounded-full transition-colors ${
-                selectedCategory === category
-                  ? "bg-neutral-900 dark:bg-white text-white dark:text-neutral-900"
-                  : "bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700"
-              }`}
-            >
-              {category} ({projects.filter((p) => p.type === category).length})
-            </button>
-          ))}
-        </motion.div>
-
-        {/* Constellation/Grid Projects */}
-        <div className="relative w-full h-[600px]">
-          {filteredProjects.map((project, i) => {
-            // Position nodes differently for dark/light mode
-            const darkPositions = [
-              { top: "15%", left: "20%" },
-              { top: "40%", left: "60%" },
-              { top: "65%", left: "30%" },
-              { top: "25%", left: "80%" },
-              { top: "75%", left: "70%" },
-            ];
-            const lightPositions = [
-              { top: "20%", left: "20%" },
-              { top: "40%", left: "40%" },
-              { top: "60%", left: "60%" },
-              { top: "80%", left: "80%" },
-              { top: "50%", left: "10%" },
-            ];
-            const pos =
-              document.documentElement.classList.contains("dark")
-                ? darkPositions[i % darkPositions.length]
-                : lightPositions[i % lightPositions.length];
-
+          {categories.map((category) => {
+            const count = projects.filter(p => p.type === category).length;
             return (
-              <motion.div
-                key={project.id}
-                className="absolute group cursor-pointer"
-                style={pos}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: i * 0.15 }}
-                onClick={() => window.open(project.link, "_blank")}
+              <button
+                key={category}
+                className={`px-4 py-2 text-sm rounded-full transition-colors ${
+                  selectedCategory === category
+                    ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
+                    : 'bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700'
+                }`}
+                onClick={() => setSelectedCategory(category)}
               >
-                {/* Node */}
-                <div
-                  className={`w-6 h-6 rounded-full ${
-                    document.documentElement.classList.contains("dark")
-                      ? "bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)]"
-                      : "bg-black"
-                  }`}
-                ></div>
-
-                {/* Tooltip on Hover */}
-                <div className="absolute left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-neutral-900 text-black dark:text-white text-sm p-3 rounded-xl shadow-lg w-56 z-10">
-                  <h4 className="font-semibold">{project.title}</h4>
-                  <p className="text-xs text-neutral-600 dark:text-neutral-400 mb-2">
-                    {project.description}
-                  </p>
-                  <span className="text-xs font-medium">{project.type}</span>
-                </div>
-              </motion.div>
+                {category} ({count})
+              </button>
             );
           })}
+        </motion.div>
 
-          {/* Decorative Lines */}
-          <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
-            <line x1="20%" y1="20%" x2="60%" y2="40%" stroke="currentColor" strokeWidth="1" />
-            <line x1="60%" y1="40%" x2="30%" y2="65%" stroke="currentColor" strokeWidth="1" />
-            <line x1="80%" y1="25%" x2="70%" y2="75%" stroke="currentColor" strokeWidth="1" />
-          </svg>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              className="bg-white dark:bg-neutral-900 rounded-2xl overflow-hidden shadow-sm border border-neutral-200 dark:border-neutral-800 hover:shadow-lg transition-shadow"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, delay: 0.4 + (index % 6) * 0.1 }}
+            >
+              <div className="aspect-video w-full relative bg-neutral-100 dark:bg-neutral-800">
+                <iframe
+                  src={project.link}
+                  title={project.title}
+                  className="w-full h-full border-0"
+                  loading="lazy"
+                  sandbox="allow-scripts allow-same-origin allow-forms"
+                  tabIndex={-1} // prevent focus
+                />
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute top-4 right-4 p-2 bg-white/90 dark:bg-neutral-900/90 rounded-full shadow-md hover:scale-110 transition-transform"
+                  aria-label={`Open ${project.title} in new tab`}
+                >
+                  <ExternalLink size={16} />
+                </a>
+              </div>
+              <div className="p-6">
+                <span className="text-xs font-medium px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full">
+                  {project.type}
+                </span>
+                <h3 className="text-xl font-semibold mt-4 mb-2">{project.title}</h3>
+                <p className="text-neutral-600 dark:text-neutral-400 mb-4 text-sm leading-relaxed">
+                  {project.description}
+                </p>
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-sm font-medium hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
+                >
+                  View Project
+                  <ArrowUpRight size={16} className="ml-1" />
+                </a>
+              </div>
+            </motion.div>
+          ))}
         </div>
+
+        {filteredProjects.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-neutral-500 dark:text-neutral-400">
+              No projects found in this category.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
