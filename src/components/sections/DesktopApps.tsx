@@ -40,7 +40,7 @@ const DesktopApps: React.FC = () => {
       id: 1,
       title: 'Clip Box',
       description: 'Never lose what you copy! Save, organize, and quickly access text, links, code, and more with customizable categories, themes, and secure storage.',
-      link: '/Kiranmayee-Abbireddy-Resume.pdf',
+      link: '/ClipBox.exe',
       platform: 'Windows',
       size: '53 MB'
     }
