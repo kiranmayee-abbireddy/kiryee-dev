@@ -43,6 +43,14 @@ const DesktopApps: React.FC = () => {
       link: '/ClipBox.exe',
       platform: 'Windows',
       size: '53 MB'
+    },
+    {
+      id: 2,
+      title: 'Key Beatz',
+      description: 'Make typing fun and musical! Play instruments with every key, add custom sounds, or go full meme mode with pets like roosters, ducks, and cats. Typing has never sounded this entertaining!',
+      link: '/KeyBeatz.exe',
+      platform: 'Windows',
+      size: '70 MB'
     }
   ];
 
