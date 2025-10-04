@@ -5,6 +5,7 @@ import Hero from './components/sections/Hero';
 import About from './components/sections/About';
 import FeaturedProject from './components/sections/FeaturedProject';
 import Projects from './components/sections/Projects';
+import DesktopApps from './components/sections/DesktopApps';
 import Games from './components/sections/Games';
 import Certifications from './components/sections/Certifications';
 import Contact from './components/sections/Contact';
@@ -22,6 +23,7 @@ function App() {
           <FeaturedProject />
           <Projects />
           <Games />
+          <DesktopApps />
           <Certifications />
           <Contact />
         </Layout>
