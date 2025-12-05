@@ -11,6 +11,7 @@ import Certifications from './components/sections/Certifications';
 import Contact from './components/sections/Contact';
 import ThemeProvider from './context/ThemeContext';
 import CustomCursor from './components/ui/CustomCursor';
+import RedbubbleShop from './components/sections/Shop';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Games />
           <DesktopApps />
           <Certifications />
+          <RedbubbleShop />
           <Contact />
         </Layout>
       </AnimatePresence>
