@@ -8,18 +8,17 @@ const RedbubbleShop: React.FC = () => {
     >
       <h2 className="text-3xl font-bold mb-10">🛍️ My Redbubble Store</h2>
       <iframe
-        title="Redbubble Portfolio"
-        src="https://www.redbubble.com/external_portfolio_iframe.js?site=www.redbubble.com&ref=mayeeverse&columns=3&rows=4"
+        title="My Redbubble Shop"
+        src="https://www.redbubble.com/people/mayeeverse/shop?asc=u"
         style={{
-          border: "none",
-          width: "90%",
+          width: "100%",
           height: "1200px",
-          maxWidth: "1000px",
+          border: "none",
           borderRadius: "1rem",
-          overflow: "hidden",
         }}
         loading="lazy"
       />
+
     </section>
   );
 };
