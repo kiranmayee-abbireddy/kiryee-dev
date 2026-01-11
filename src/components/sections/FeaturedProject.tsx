@@ -1,29 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Smartphone, Download } from 'lucide-react';
 import AnimatedButton from '../ui/AnimatedButton';
-import Lottie from 'lottie-react';
-import { useEffect, useState } from 'react';
-const FeaturedProject: React.FC = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-  const [animationData, setAnimationData] = useState<any>(null);
+import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 
+const FeaturedProject: React.FC = () => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [animationData, setAnimationData] = useState<any>(null);
+  const lottieRef = useRef<LottieRefCurrentProps>(null);
+
+  const [shouldPlay, setShouldPlay] = useState(false);
+
+  // Fetch JSON
   useEffect(() => {
     fetch('/lumiflow.json')
-      .then((res) => res.json())
+      .then(res => res.json())
       .then(setAnimationData)
       .catch(console.error);
   }, []);
 
-  const [shouldPlay, setShouldPlay] = useState(false);
-
-  // check on mount if section is already in view
+  // Check if section is already in view on mount
   useEffect(() => {
-    // Check if element exists via getBoundingClientRect
     const element = document.getElementById('featured-project');
     if (element) {
       const rect = element.getBoundingClientRect();
@@ -33,11 +31,17 @@ const FeaturedProject: React.FC = () => {
     }
   }, []);
 
-
-  // also trigger when intersection changes
+  // Trigger when intersection changes
   useEffect(() => {
     if (inView) setShouldPlay(true);
   }, [inView]);
+
+  // Play Lottie when JSON loaded and shouldPlay is true
+  useEffect(() => {
+    if (animationData && shouldPlay && lottieRef.current) {
+      lottieRef.current.play();
+    }
+  }, [animationData, shouldPlay]);
 
   const keyFeatures = [
     'Quick Logging for moods, habits, tasks, and affirmations',
@@ -52,6 +56,7 @@ const FeaturedProject: React.FC = () => {
       <div className="container mx-auto px-6" ref={ref}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
             {/* Left Side - Project Info */}
             <motion.div
               className="order-2 lg:order-1"
@@ -176,14 +181,14 @@ const FeaturedProject: React.FC = () => {
                     sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
                   />
                 </div>
-                
-                {/* Floating elements for visual interest */}
-                <motion.div 
+
+                {/* Floating elements */}
+                <motion.div
                   className="absolute -top-4 -right-4 w-8 h-8 bg-neutral-200 dark:bg-neutral-700 rounded-full"
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 3, delay: 0 }}
                 />
-                <motion.div 
+                <motion.div
                   className="absolute -bottom-4 -left-4 w-6 h-6 bg-neutral-300 dark:bg-neutral-600 rounded-full"
                   animate={{ y: [0, -8, 0] }}
                   transition={{ repeat: Infinity, duration: 3, delay: 1 }}
@@ -193,10 +198,17 @@ const FeaturedProject: React.FC = () => {
               {/* Desktop / large screens */}
               <div className="hidden lg:block w-full h-full">
                 {animationData && (
-                  <Lottie animationData={animationData} loop autoplay={shouldPlay} />
+                  <Lottie
+                    lottieRef={lottieRef}
+                    animationData={animationData}
+                    loop
+                    autoplay={false} // manual play
+                    style={{ width: '100%', height: '100%' }}
+                  />
                 )}
               </div>
             </motion.div>
+
           </div>
         </div>
       </div>
