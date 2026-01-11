@@ -4,24 +4,35 @@ import { useInView } from 'react-intersection-observer';
 import { Smartphone, Download } from 'lucide-react';
 import AnimatedButton from '../ui/AnimatedButton';
 import Lottie from 'lottie-react';
-import lumiflowAnimation from '/lumiflow.json';
 import { useEffect, useState } from 'react';
 const FeaturedProject: React.FC = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+  const [animationData, setAnimationData] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/lumiflow.json')
+      .then((res) => res.json())
+      .then(setAnimationData)
+      .catch(console.error);
+  }, []);
+
   const [shouldPlay, setShouldPlay] = useState(false);
 
   // check on mount if section is already in view
   useEffect(() => {
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
+    // Check if element exists via getBoundingClientRect
+    const element = document.getElementById('featured-project');
+    if (element) {
+      const rect = element.getBoundingClientRect();
       if (rect.top < window.innerHeight && rect.bottom > 0) {
         setShouldPlay(true);
       }
     }
-  }, [ref]);
+  }, []);
+
 
   // also trigger when intersection changes
   useEffect(() => {
@@ -181,12 +192,9 @@ const FeaturedProject: React.FC = () => {
 
               {/* Desktop / large screens */}
               <div className="hidden lg:block w-full h-full">
-                <Lottie
-                  animationData={lumiflowAnimation}
-                  loop
-                  autoplay={shouldPlay}
-                  style={{ width: '100%', height: '100%' }}
-                />
+                {animationData && (
+                  <Lottie animationData={animationData} loop autoplay={shouldPlay} />
+                )}
               </div>
             </motion.div>
           </div>
