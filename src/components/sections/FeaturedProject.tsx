@@ -5,12 +5,28 @@ import { Smartphone, Download } from 'lucide-react';
 import AnimatedButton from '../ui/AnimatedButton';
 import Lottie from 'lottie-react';
 import lumiflowAnimation from '/public/lumiflow.json';
-
+import { useEffect, useState } from 'react';
 const FeaturedProject: React.FC = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+  const [shouldPlay, setShouldPlay] = useState(false);
+
+  // check on mount if section is already in view
+  useEffect(() => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        setShouldPlay(true);
+      }
+    }
+  }, [ref]);
+
+  // also trigger when intersection changes
+  useEffect(() => {
+    if (inView) setShouldPlay(true);
+  }, [inView]);
 
   const keyFeatures = [
     'Quick Logging for moods, habits, tasks, and affirmations',
@@ -165,7 +181,7 @@ const FeaturedProject: React.FC = () => {
                 <Lottie
                   path="/lumiflow.json"
                   loop
-                  autoplay={inView}
+                  autoplay={shouldPlay}
                   style={{ width: '100%', height: '100%' }}
                 />
               </div>
