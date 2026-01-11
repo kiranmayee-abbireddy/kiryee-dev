@@ -163,7 +163,7 @@ const FeaturedProject: React.FC = () => {
               </div>
               <div className="hidden lg:block w-full h-full">
                 <Lottie
-                  animationData={lumiflowAnimation}
+                  path="/lumiflow.json"
                   loop
                   autoplay={inView}
                   style={{ width: '100%', height: '100%' }}
