@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { Smartphone, Download } from 'lucide-react';
 import AnimatedButton from '../ui/AnimatedButton';
 import Lottie from 'lottie-react';
-import lumiflowAnimation from '/public/lumiflow.json';
+import lumiflowAnimation from '/lumiflow.json';
 import { useEffect, useState } from 'react';
 const FeaturedProject: React.FC = () => {
   const [ref, inView] = useInView({
@@ -154,6 +154,7 @@ const FeaturedProject: React.FC = () => {
               animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
+              {/* Mobile / small screens */}
               <div className="relative block lg:hidden">
                 <div className="aspect-[4/5] w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden shadow-2xl border border-neutral-200 dark:border-neutral-700">
                   <iframe
@@ -177,9 +178,11 @@ const FeaturedProject: React.FC = () => {
                   transition={{ repeat: Infinity, duration: 3, delay: 1 }}
                 />
               </div>
+
+              {/* Desktop / large screens */}
               <div className="hidden lg:block w-full h-full">
                 <Lottie
-                  path="/lumiflow.json"
+                  animationData={lumiflowAnimation}
                   loop
                   autoplay={shouldPlay}
                   style={{ width: '100%', height: '100%' }}
