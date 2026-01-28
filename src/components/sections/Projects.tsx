@@ -205,25 +205,23 @@ const Projects: React.FC = () => {
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.4 + (index % 6) * 0.1 }}
             >
-              <div className="aspect-video w-full relative bg-neutral-100 dark:bg-neutral-800">
-                <iframe
-                  src={project.link}
-                  title={project.title}
-                  className="w-full h-full border-0"
-                  loading="lazy"
-                  sandbox="allow-scripts allow-same-origin allow-forms"
-                  tabIndex={-1} // prevent focus
-                />
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute top-4 right-4 p-2 bg-white/90 dark:bg-neutral-900/90 rounded-full shadow-md hover:scale-110 transition-transform"
-                  aria-label={`Open ${project.title} in new tab`}
+              <div className="relative w-full h-[200px] bg-neutral-100 dark:bg-neutral-800">
+                <motion.div
+                  className="w-full h-full flex items-center justify-center bg-neutral-100 dark:bg-neutral-800"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <ExternalLink size={16} />
-                </a>
+                  <h3
+                    className="font-extrabold text-neutral-900 dark:text-white text-center px-6 
+                              leading-tight tracking-tight 
+                              text-[clamp(1.8rem,4vw,3.2rem)] 
+                              whitespace-pre-line"
+                  >
+                    {project.title}
+                  </h3>
+                </motion.div>
               </div>
+
               <div className="p-6">
                 <span className="text-xs font-medium px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full">
                   {project.type}

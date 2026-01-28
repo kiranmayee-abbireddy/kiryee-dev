@@ -68,7 +68,7 @@ const DesktopApps: React.FC = () => {
   };
 
   return (
-    <section id="apps" className="py-24 bg-white dark:bg-black">
+    <section id="apps" className="py-24 bg-white dark:bg-neutral-900">
       <div className="container mx-auto px-6" ref={ref}>
         <div className="max-w-3xl mx-auto md:text-center mb-16">
           <motion.p 

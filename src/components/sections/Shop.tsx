@@ -36,7 +36,7 @@ export default function UiverseGallery() {
     : galleryItems;
 
   return (
-    <section className="py-20 px-6 bg-white dark:bg-black text-black dark:text-white">
+    <section className="py-20 px-6 bg-white dark:bg-neutral-900 text-black dark:text-white">
       <div className="max-w-3xl mx-auto text-center mb-16">
         <motion.p
           className="text-sm font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-3"
