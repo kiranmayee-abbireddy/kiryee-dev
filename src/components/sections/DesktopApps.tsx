@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Monitor, Smartphone } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
 
 interface DesktopApp {
   id: number;
@@ -12,28 +13,11 @@ interface DesktopApp {
 }
 
 const DesktopApps: React.FC = () => {
-  const [inView, setInView] = React.useState(false);
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-        }
-      },
-      { 
-        threshold: 0.1,
-        rootMargin: '0px 0px -10% 0px'
-      }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+    rootMargin: '0px 0px -10% 0px'
+  });
 
   const apps: DesktopApp[] = [
     {
@@ -51,6 +35,14 @@ const DesktopApps: React.FC = () => {
       link: '/KeyBeatz.exe',
       platform: 'Windows',
       size: '70 MB'
+    },
+    {
+      id: 3,
+      title: 'Clean Sweep',
+      description: 'A powerful, modern desktop application designed for granular system optimization. It provides developers and power users with total control over file cleanup and organization through a sleek, premium interface.',
+      link: '/CleanSweep.exe',
+      platform: 'Windows',
+      size: '14 MB'
     }
   ];
 
@@ -71,7 +63,7 @@ const DesktopApps: React.FC = () => {
     <section id="apps" className="py-24 bg-white dark:bg-neutral-900">
       <div className="container mx-auto px-6" ref={ref}>
         <div className="max-w-3xl mx-auto md:text-center mb-16">
-          <motion.p 
+          <motion.p
             className="text-sm font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-3"
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : { opacity: 0 }}
@@ -79,7 +71,7 @@ const DesktopApps: React.FC = () => {
           >
             Desktop Applications
           </motion.p>
-          <motion.h2 
+          <motion.h2
             className="text-3xl md:text-4xl font-bold tracking-tight mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -87,7 +79,7 @@ const DesktopApps: React.FC = () => {
           >
             Desktop Apps
           </motion.h2>
-          <motion.p 
+          <motion.p
             className="text-lg text-neutral-700 dark:text-neutral-300"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -101,12 +93,12 @@ const DesktopApps: React.FC = () => {
           {apps.map((app, index) => (
             <motion.div
               key={app.id}
-              className="bg-white dark:bg-neutral-900 rounded-2xl p-8 shadow-sm border border-neutral-200 dark:border-neutral-800 hover:shadow-lg hover:transform hover:-translate-y-1 transition-all group"
+              className="bg-white dark:bg-neutral-900 rounded-2xl p-8 shadow-sm border border-neutral-200 dark:border-neutral-800 hover:shadow-lg hover:transform hover:-translate-y-1 transition-all group flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
             >
-              <div className="mb-6">
+              <div className="mb-6 flex-1">
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-3 rounded-full bg-neutral-100 dark:bg-neutral-800">
                     <Monitor size={24} />
@@ -128,7 +120,7 @@ const DesktopApps: React.FC = () => {
                   {app.description}
                 </p>
               </div>
-              
+
               <a
                 href={app.link}
                 target="_blank"
