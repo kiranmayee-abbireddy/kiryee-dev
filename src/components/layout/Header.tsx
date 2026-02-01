@@ -264,13 +264,16 @@ const Header: React.FC = () => {
 
             {/* Invisible Drag Area (The "Handle" for the Dial) */}
             <div
-              className="absolute top-0 right-0 w-[300px] h-[300px] pointer-events-auto touch-none"
+              className="absolute top-0 right-0 w-[400px] h-[400px] pointer-events-auto touch-none"
               onPointerMove={(e) => {
                 if (e.buttons > 0) {
-                  const sensitivity = 0.8;
+                  const sensitivity = 0.6;
                   const current = rotationRaw.get();
-                  // Up/Down movement rotates the dial
-                  rotationRaw.set(Math.max(-200, Math.min(0, current + e.movementY * sensitivity)));
+                  // Flipping the sign: now movement matches finger direction
+                  // Pulling Right/Down decreases rotation value (moves counter-clockwise)
+                  // which visually moves items RIGHT/UP.
+                  const delta = (e.movementY + e.movementX) * sensitivity;
+                  rotationRaw.set(Math.max(-220, Math.min(0, current - delta)));
                 }
               }}
             />
