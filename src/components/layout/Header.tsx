@@ -73,9 +73,9 @@ const Header: React.FC = () => {
     return '#171717';
   };
 
-  const headerClass = `fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled && !mobileMenuOpen
-    ? 'py-4 bg-white/90 dark:bg-neutral-900/90 sea:bg-[#f5e6d3]/90 backdrop-blur-sm shadow-sm'
-    : 'py-6 bg-transparent'
+  const headerClass = `fixed top-0 left-0 right-0 transition-all duration-300 pointer-events-none ${isScrolled && !mobileMenuOpen
+    ? 'py-4 bg-white/90 dark:bg-neutral-900/90 sea:bg-[#f5e6d3]/90 backdrop-blur-sm shadow-sm z-[100]'
+    : mobileMenuOpen ? 'py-6 bg-transparent z-[200]' : 'py-6 bg-transparent z-[100]'
     }`;
 
   const navItems = [
@@ -96,7 +96,7 @@ const Header: React.FC = () => {
           <motion.a
             href="#home"
             onClick={(e) => handleNavClick(e, '#home')}
-            className="text-2xl font-bold tracking-tighter hover:text-neutral-600 dark:hover:text-neutral-300 sea:hover:text-[#78350f] transition-colors"
+            className="text-2xl font-bold tracking-tighter hover:text-neutral-600 dark:hover:text-neutral-300 sea:hover:text-[#78350f] transition-colors pointer-events-auto"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -105,7 +105,7 @@ const Header: React.FC = () => {
           </motion.a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8 pointer-events-auto">
             {navItems.map((item, i) => (
               <motion.a
                 key={item.href}
@@ -159,7 +159,7 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Mobile Menu Button - The Center of the Quadrant */}
-          <div className="flex items-center md:hidden gap-1 z-[110]">
+          <div className="flex items-center md:hidden gap-1 z-[210] pointer-events-auto">
             <button
               onClick={() => setTheme(theme === 'sea' ? 'light' : 'sea')}
               className={`p-2 rounded-full transition-colors ${theme === 'sea' ? 'bg-[#78350f] text-white' : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'}`}
@@ -179,7 +179,7 @@ const Header: React.FC = () => {
                 setMobileMenuOpen(!mobileMenuOpen);
                 rotationRaw.set(0);
               }}
-              className={`relative z-[150] p-2 rounded-full transition-all duration-300 ${mobileMenuOpen ? getThemeColors() : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
+              className={`relative z-[220] p-2 rounded-full transition-all duration-300 ${mobileMenuOpen ? getThemeColors() : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
                 }`}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
