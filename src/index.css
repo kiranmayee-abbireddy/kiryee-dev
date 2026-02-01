@@ -162,10 +162,13 @@ html {
 }
 
 /* Icon Colors */
-.sea .bg-neutral-100 svg,
 .sea .bg-neutral-900 svg,
 .sea .p-3.rounded-full svg {
   color: #fff !important;
+}
+
+.sea .bg-neutral-100 svg:not(.p-3.rounded-full svg) {
+  color: var(--accent-primary) !important;
 }
 
 /* Text Colors */

@@ -104,7 +104,7 @@ const DesktopApps: React.FC = () => {
                     <Monitor size={24} />
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full flex items-center gap-1">
+                    <span className="text-xs font-medium px-3 py-1 bg-neutral-100 dark:bg-neutral-800 sea:bg-[#78350f]/10 sea:text-[#78350f] rounded-full flex items-center gap-1 transition-colors">
                       {getPlatformIcon(app.platform)}
                       {app.platform}
                     </span>
