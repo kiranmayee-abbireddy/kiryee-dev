@@ -73,7 +73,7 @@ const Header: React.FC = () => {
     return '#171717';
   };
 
-  const headerClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+  const headerClass = `fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled
     ? 'py-4 bg-white/90 dark:bg-neutral-900/90 sea:bg-[#f5e6d3]/90 backdrop-blur-sm shadow-sm'
     : 'py-6 bg-transparent'
     }`;
@@ -177,9 +177,9 @@ const Header: React.FC = () => {
             <button
               onClick={() => {
                 setMobileMenuOpen(!mobileMenuOpen);
-                rotationRaw.set(0); // Reset rotation when opening
+                rotationRaw.set(0);
               }}
-              className={`relative z-[120] p-2 rounded-full transition-all duration-300 ${mobileMenuOpen ? getThemeColors() : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
+              className={`relative z-[150] p-2 rounded-full transition-all duration-300 ${mobileMenuOpen ? getThemeColors() : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
                 }`}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -189,66 +189,49 @@ const Header: React.FC = () => {
       </header>
       <AnimatePresence>
         {mobileMenuOpen && (
-          <>
+          <div className="fixed inset-0 z-[90] overflow-hidden pointer-events-none select-none">
             {/* Dimmer Backdrop */}
             <motion.div
-              className="fixed inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm z-[90]"
+              className="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-md pointer-events-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
             />
 
-            {/* The Quadrant Menu */}
+            {/* Fixed Wheel Container (Pivot EXACTLY on Menu Button) */}
             <motion.div
-              className="fixed top-0 right-0 z-[100] pointer-events-none"
-              initial={{ opacity: 0, scale: 0.5, x: 100, y: -100 }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-              exit={{ opacity: 0, scale: 0.5, x: 100, y: -100 }}
+              className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none"
+              style={{
+                right: '44px', // Aligns pivot with menu button center
+                top: '44px',   // Aligns pivot with menu button center
+              }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
             >
-              {/* Visual Circle/Arc - originates from top right */}
-              <svg className="absolute top-0 right-0 w-[500px] h-[500px]" style={{ transform: 'translate(40%, -40%)' }}>
-                <circle
-                  cx="250" cy="250" r="240"
-                  fill="none"
-                  stroke={getThemeAccent()}
-                  strokeWidth="1"
-                  strokeDasharray="5,5"
-                  className="opacity-20"
-                />
-                <circle
-                  cx="250" cy="250" r="280"
-                  fill="none"
-                  stroke={getThemeAccent()}
-                  strokeWidth="1"
-                  className="opacity-10"
-                />
+              {/* Visual Arc Decoration (Fixed) */}
+              <svg viewBox="0 0 500 500" className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                <circle cx="500" cy="0" r="200" fill="none" stroke={getThemeAccent()} strokeWidth="1.5" strokeDasharray="8,8" />
+                <circle cx="500" cy="0" r="240" fill="none" stroke={getThemeAccent()} strokeWidth="0.5" />
               </svg>
 
-              {/* Rotating Container */}
+              {/* The Rotating Wheel */}
               <motion.div
-                className="relative pointer-events-auto"
+                className="absolute inset-0"
                 style={{
-                  width: '600px', height: '600px',
                   transformOrigin: 'top right',
-                  right: '-30px', top: '30px',
                   rotate: rotation
                 }}
-                onPan={(_, info) => {
-                  const sensitivity = 0.5;
-                  const delta = (info.delta.x - info.delta.y) * sensitivity;
-                  const current = rotationRaw.get();
-                  rotationRaw.set(Math.max(-150, Math.min(0, current + delta)));
-                }}
-                transition={{ type: "spring", damping: 20, stiffness: 150 }}
               >
                 {navItems.map((item, i) => {
                   const Icon = IconMap[item.icon as string];
-                  const spacing = 25;
-                  const angle = 95 + (i * spacing);
-                  const radius = 220;
+                  // Start items further down the arc (90 is top, 180 is left)
+                  const angle = 100 + (i * 28);
+                  const radius = 210;
 
+                  // Calculate position relative to container's top-right corner (pivot)
                   const x = radius * Math.cos(angle * (Math.PI / 180));
                   const y = radius * Math.sin(angle * (Math.PI / 180));
 
@@ -257,19 +240,21 @@ const Header: React.FC = () => {
                       key={item.href}
                       className="absolute"
                       style={{
-                        left: '100%', top: '0',
-                        x: x - 30, y: y - 30
+                        right: -x - 32, // Offset for icon center
+                        top: y - 32    // Offset for icon center
                       }}
                     >
                       <motion.a
                         href={item.href}
                         onClick={(e) => handleNavClick(e, item.href)}
-                        className={`flex flex-col items-center justify-center w-16 h-16 rounded-full shadow-lg border-2 transition-transform active:scale-90 ${getThemeColors()}`}
-                        whileHover={{ scale: 1.1 }}
+                        className={`flex flex-col items-center justify-center w-16 h-16 rounded-full shadow-xl border-2 backdrop-blur-md pointer-events-auto transition-all active:scale-95 ${getThemeColors()}`}
                         style={{ rotate: rotationInverse }}
+                        whileHover={{ scale: 1.1, y: -2 }}
                       >
-                        <Icon size={20} />
-                        <span className="text-[8px] font-bold mt-1 uppercase tracking-tighter">{item.label}</span>
+                        <Icon size={24} />
+                        <span className="text-[8px] font-black mt-1 uppercase tracking-tighter text-center px-1">
+                          {item.label === 'Certifications' ? 'Certificates' : item.label}
+                        </span>
                       </motion.a>
                     </motion.div>
                   );
@@ -277,21 +262,33 @@ const Header: React.FC = () => {
               </motion.div>
             </motion.div>
 
-            {/* Resume Floating Button - Bottom Right */}
+            {/* Invisible Drag Area (The "Handle" for the Dial) */}
+            <div
+              className="absolute top-0 right-0 w-[300px] h-[300px] pointer-events-auto touch-none"
+              onPointerMove={(e) => {
+                if (e.buttons > 0) {
+                  const sensitivity = 0.8;
+                  const current = rotationRaw.get();
+                  // Up/Down movement rotates the dial
+                  rotationRaw.set(Math.max(-200, Math.min(0, current + e.movementY * sensitivity)));
+                }
+              }}
+            />
+
+            {/* Floating Resume Button */}
             <motion.a
               href="/Kiranmayee-Abbireddy-Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className={`fixed bottom-8 right-8 z-[110] flex items-center gap-3 px-6 py-4 rounded-2xl font-bold shadow-2xl ${getThemeColors()}`}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0 }}
-              transition={{ delay: 0.3 }}
+              className={`fixed bottom-8 right-8 z-[110] flex items-center gap-3 px-8 py-4 rounded-2xl font-black text-sm shadow-2xl pointer-events-auto border-2 ${getThemeColors()}`}
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
             >
               <FileDown size={20} />
               RESUME
             </motion.a>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </>
