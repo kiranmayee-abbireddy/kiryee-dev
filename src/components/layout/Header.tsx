@@ -73,7 +73,7 @@ const Header: React.FC = () => {
     return '#171717';
   };
 
-  const headerClass = `fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled
+  const headerClass = `fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled && !mobileMenuOpen
     ? 'py-4 bg-white/90 dark:bg-neutral-900/90 sea:bg-[#f5e6d3]/90 backdrop-blur-sm shadow-sm'
     : 'py-6 bg-transparent'
     }`;
@@ -189,7 +189,7 @@ const Header: React.FC = () => {
       </header>
       <AnimatePresence>
         {mobileMenuOpen && (
-          <div className="fixed inset-0 z-[90] overflow-hidden pointer-events-none select-none">
+          <div className="fixed inset-0 z-[110] overflow-hidden pointer-events-none select-none">
             {/* Dimmer Backdrop */}
             <motion.div
               className="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-md pointer-events-auto"
@@ -199,12 +199,25 @@ const Header: React.FC = () => {
               onClick={() => setMobileMenuOpen(false)}
             />
 
+            {/* Invisible Drag Area (The "Handle" for the Dial) - Moved BEFORE items to allow clicking */}
+            <div
+              className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-auto touch-none z-[95]"
+              onPointerMove={(e) => {
+                if (e.buttons > 0) {
+                  const sensitivity = 0.6;
+                  const current = rotationRaw.get();
+                  const delta = (e.movementY + e.movementX) * sensitivity;
+                  rotationRaw.set(Math.max(-220, Math.min(0, current - delta)));
+                }
+              }}
+            />
+
             {/* Fixed Wheel Container (Pivot EXACTLY on Menu Button) */}
             <motion.div
-              className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none"
+              className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none z-[130]"
               style={{
-                right: '44px', // Aligns pivot with menu button center
-                top: '44px',   // Aligns pivot with menu button center
+                right: '44px',
+                top: '44px',
               }}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -227,11 +240,8 @@ const Header: React.FC = () => {
               >
                 {navItems.map((item, i) => {
                   const Icon = IconMap[item.icon as string];
-                  // Start items further down the arc (90 is top, 180 is left)
                   const angle = 100 + (i * 28);
                   const radius = 210;
-
-                  // Calculate position relative to container's top-right corner (pivot)
                   const x = radius * Math.cos(angle * (Math.PI / 180));
                   const y = radius * Math.sin(angle * (Math.PI / 180));
 
@@ -240,8 +250,8 @@ const Header: React.FC = () => {
                       key={item.href}
                       className="absolute"
                       style={{
-                        right: -x - 32, // Offset for icon center
-                        top: y - 32    // Offset for icon center
+                        right: -x - 32,
+                        top: y - 32
                       }}
                     >
                       <motion.a
@@ -261,22 +271,6 @@ const Header: React.FC = () => {
                 })}
               </motion.div>
             </motion.div>
-
-            {/* Invisible Drag Area (The "Handle" for the Dial) */}
-            <div
-              className="absolute top-0 right-0 w-[400px] h-[400px] pointer-events-auto touch-none"
-              onPointerMove={(e) => {
-                if (e.buttons > 0) {
-                  const sensitivity = 0.6;
-                  const current = rotationRaw.get();
-                  // Flipping the sign: now movement matches finger direction
-                  // Pulling Right/Down decreases rotation value (moves counter-clockwise)
-                  // which visually moves items RIGHT/UP.
-                  const delta = (e.movementY + e.movementX) * sensitivity;
-                  rotationRaw.set(Math.max(-220, Math.min(0, current - delta)));
-                }
-              }}
-            />
 
             {/* Floating Resume Button */}
             <motion.a
