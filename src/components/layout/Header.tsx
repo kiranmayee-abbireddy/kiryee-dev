@@ -62,7 +62,7 @@ const Header: React.FC = () => {
 
   // Theme-based colors for the radial menu
   const getThemeColors = () => {
-    if (theme === 'sea') return 'bg-[#78350f] text-white border-[#5d2a0c]';
+    if (theme === 'sea') return 'bg-[#fdfcf0] text-[#1e1b1c] border-[#78350f]';
     if (theme === 'dark') return 'bg-white text-neutral-900 border-neutral-200';
     return 'bg-neutral-900 text-white border-neutral-800';
   };

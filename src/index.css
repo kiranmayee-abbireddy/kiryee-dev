@@ -55,19 +55,19 @@ html {
   color: #000;
 }
 
-/* SEA THEME DEFINITION */
+/* SEA THEME DEFINITION - New Contrasting Palette */
 .sea {
-  --bg-primary: #f5e6d3;
-  /* tan sand */
-  --bg-card: #e5d5b7;
-  /* darker tan sand */
+  --bg-sand: #f5e6d3;
+  /* Base Sand Color (Used in About & now Contact) */
+  --bg-card: #fdfcf0;
+  /* Light Cream Card Color */
   --text-primary: #1e1b1c;
   --accent-primary: #78350f;
-  /* wet sand brown */
+  /* Branded Wet Sand Brown */
 }
 
 .sea body {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-sand);
   color: var(--text-primary);
 }
 
@@ -75,30 +75,58 @@ html {
   background: var(--accent-primary) !important;
 }
 
-/* Force Uniform Section Background */
-.sea section {
-  background-color: var(--bg-primary) !important;
+/* Universal Section Background */
+.sea section:not(#about):not(#apps):not(.uiverse-showcase) {
+  background-color: var(--bg-sand) !important;
 }
 
-/* Cards & Containers - Darker Sand */
+/* Specific Section Background Overrides */
+.sea #apps,
+.sea .uiverse-showcase {
+  background-color: #faf3e8 !important;
+  /* Lighter shade for body */
+}
+
+.sea #about {
+  background-color: var(--bg-card) !important;
+  /* Inverted: Light body for About */
+}
+
+/* Cards & Containers - Light Contrast */
 .sea .bg-white:not(.filter-button-active),
 .sea .bg-neutral-50:not(.filter-button-active),
 .sea .bg-neutral-100:not(.filter-button-active):not(.filter-button-inactive):not(button),
 .sea .rounded-2xl.shadow-sm:not(button):not(.filter-button-inactive):not(.filter-button-active),
 .sea div[class*="bg-white"],
-.sea div[class*="bg-neutral-50"] {
+.sea div[class*="bg-neutral-50"],
+.sea .bg-neutral-900.rounded-2xl {
+  /* Mobile cards often use bg-neutral-900 in dark, need light in sea */
   background-color: var(--bg-card) !important;
+  border: 1px solid #e7d8c0 !important;
+  color: var(--text-primary) !important;
+}
+
+/* About Section Inversion (Sand Cards on Light Body) */
+.sea #about .bg-white,
+.sea #about .rounded-2xl {
+  background-color: var(--bg-sand) !important;
+  border: 1px solid #dcc6a3 !important;
+}
+
+/* Text Inputs - Contrast Logic */
+.sea input,
+.sea textarea,
+.sea select {
+  background-color: var(--bg-card) !important;
+  /* default */
   border: 1px solid #dcc6a3 !important;
   color: var(--text-primary) !important;
 }
 
-/* Text Inputs - Lighter body color */
-.sea input,
-.sea textarea,
-.sea select {
-  background-color: var(--bg-primary) !important;
-  border: 1px solid #dcc6a3 !important;
-  color: var(--text-primary) !important;
+.sea #contact input,
+.sea #contact textarea {
+  background-color: var(--bg-sand) !important;
+  /* Same as About background */
 }
 
 .sea input:focus,

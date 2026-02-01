@@ -4,6 +4,8 @@ import { useTheme } from '../../context/ThemeContext';
 const CursorRevealBackground: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const interactionTimeout = useRef<ReturnType<typeof setTimeout>>();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const { theme } = useTheme();
@@ -15,6 +17,32 @@ const CursorRevealBackground: React.FC = () => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
+      setIsInteracting(true);
+      clearTimeout(interactionTimeout.current);
+      interactionTimeout.current = setTimeout(() => setIsInteracting(false), 2000);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        setMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+        if (!isVisible) setIsVisible(true);
+        setIsInteracting(true);
+        clearTimeout(interactionTimeout.current);
+        interactionTimeout.current = setTimeout(() => setIsInteracting(false), 2000);
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        setMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+        if (!isVisible) setIsVisible(true);
+        setIsInteracting(true);
+        clearTimeout(interactionTimeout.current);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      interactionTimeout.current = setTimeout(() => setIsInteracting(false), 2000);
     };
 
     const handleMouseLeave = () => {
@@ -23,12 +51,55 @@ const CursorRevealBackground: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+      clearTimeout(interactionTimeout.current);
     };
   }, [isVisible]);
+
+  // Check if device supports hover (not touch device)
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  // Automatic wandering reveal for touch devices or inactive users
+  useEffect(() => {
+    const isSmallScreen = window.innerWidth < 1024;
+    if (!isSmallScreen) return;
+
+    setIsVisible(true);
+    let angle = Math.random() * Math.PI * 2;
+    const wander = () => {
+      if (isInteracting) {
+        wanderTimer = requestAnimationFrame(wander);
+        return;
+      }
+
+      angle += 0.005;
+      const x = window.innerWidth / 2 + Math.cos(angle) * (window.innerWidth / 3);
+      const y = window.innerHeight / 2 + Math.sin(angle * 0.8) * (window.innerHeight / 3);
+
+      setMousePosition(prev => ({
+        x: prev.x + (x - prev.x) * 0.02,
+        y: prev.y + (y - prev.y) * 0.02
+      }));
+
+      wanderTimer = requestAnimationFrame(wander);
+    };
+
+    let wanderTimer = requestAnimationFrame(wander);
+    return () => cancelAnimationFrame(wanderTimer);
+  }, [isTouchDevice, isInteracting]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -291,25 +362,6 @@ const CursorRevealBackground: React.FC = () => {
       }
     };
   }, [theme]);
-
-  // Check if device supports hover (not touch device)
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  useEffect(() => {
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, []);
-
-  if (isTouchDevice) {
-    // Show full background on touch devices
-    return (
-      <div className="absolute inset-0 pointer-events-none">
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full opacity-30"
-        />
-      </div>
-    );
-  }
 
   return (
     <div className="absolute inset-0 pointer-events-none">
