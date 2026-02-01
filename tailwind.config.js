@@ -23,5 +23,9 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    ({ addVariant }) => {
+      addVariant('sea', '.sea &');
+    },
+  ],
 };

@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-  
+
   const socialLinks = [
     { icon: <Github size={20} />, href: "https://github.com/kiranmayee-abbireddy", label: "GitHub" },
     { icon: <Linkedin size={20} />, href: "https://www.linkedin.com/in/kiranmayee-abbireddy/", label: "LinkedIn" },
@@ -12,23 +12,23 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="py-12 border-t border-neutral-200 dark:border-neutral-800">
+    <footer className="py-12 border-t border-neutral-200 dark:border-neutral-800 sea:border-[#c9b08a]">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <motion.div 
+          <motion.div
             className="mb-8 md:mb-0"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="text-2xl font-bold tracking-tighter mb-2">kiryee.dev</div>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            <div className="text-2xl font-bold tracking-tighter mb-2 sea:text-[#1e1b1c]">kiryee.dev</div>
+            <p className="text-sm text-neutral-600 dark:text-neutral-400 sea:text-[#451a03]">
               Building the future of the web
             </p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="flex space-x-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -36,10 +36,10 @@ const Footer: React.FC = () => {
             viewport={{ once: true }}
           >
             {socialLinks.map((link, i) => (
-              <a 
+              <a
                 key={i}
                 href={link.href}
-                className="p-2 rounded-full text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                className="p-2 rounded-full text-neutral-600 dark:text-neutral-400 sea:text-[#451a03] hover:text-neutral-900 dark:hover:text-white sea:hover:text-[#78350f] hover:bg-neutral-100 dark:hover:bg-neutral-800 sea:hover:bg-[#dbc9a6] transition-colors"
                 aria-label={link.label}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -49,9 +49,9 @@ const Footer: React.FC = () => {
             ))}
           </motion.div>
         </div>
-        
-        <motion.div 
-          className="text-center mt-12 text-sm text-neutral-500 dark:text-neutral-500"
+
+        <motion.div
+          className="text-center mt-12 text-sm text-neutral-500 dark:text-neutral-500 sea:text-[#451a03]"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}

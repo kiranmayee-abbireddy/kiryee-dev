@@ -53,25 +53,41 @@ const CursorRevealBackground: React.FC = () => {
 
       // Theme-based colors
       const isDark = theme === 'dark';
-      const primaryColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
-      const secondaryColor = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
-      const accentColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)';
+      const isSea = theme === 'sea';
+
+      let primaryColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
+      let secondaryColor = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
+      let accentColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)';
+
+      if (isSea) {
+        // Sky gradient
+        const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.4);
+        skyGradient.addColorStop(0, '#0284c7'); // sky 600
+        skyGradient.addColorStop(1, '#bae6fd'); // sky 200
+        ctx.fillStyle = skyGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height * 0.4);
+
+        // Sea colors
+        primaryColor = 'rgba(20, 184, 166, 0.6)'; // turquoise
+        secondaryColor = 'rgba(13, 148, 136, 0.4)'; // teal
+        accentColor = 'rgba(45, 212, 191, 0.8)'; // turquoise light
+      }
 
       // Create multiple slow wave layers for gentle ocean effect
       for (let layer = 0; layer < 4; layer++) {
         ctx.beginPath();
-        
-        const amplitude = 40 + layer * 15;
-        const frequency = 0.008 + layer * 0.001;
-        const speed = 0.008 + layer * 0.004; // Much slower waves
-        const yOffset = canvas.height * 0.4 + layer * 30;
+
+        const amplitude = isSea ? (30 + layer * 10) : (40 + layer * 15);
+        const frequency = isSea ? (0.005 + layer * 0.001) : (0.008 + layer * 0.001);
+        const speed = isSea ? (0.005 + layer * 0.002) : (0.008 + layer * 0.004);
+        const yOffset = canvas.height * (isSea ? 0.35 : 0.4) + layer * 30;
 
         for (let x = 0; x <= canvas.width; x += 3) {
-          const y = yOffset + 
+          const y = yOffset +
             Math.sin(x * frequency + time * speed) * amplitude +
             Math.sin(x * frequency * 1.5 + time * speed * 1.2) * (amplitude * 0.4) +
             Math.sin(x * frequency * 0.3 + time * speed * 0.6) * (amplitude * 0.2);
-          
+
           if (x === 0) {
             ctx.moveTo(x, y);
           } else {
@@ -86,32 +102,82 @@ const CursorRevealBackground: React.FC = () => {
 
         // Apply gradient fill
         const gradient = ctx.createLinearGradient(0, yOffset - amplitude, 0, canvas.height);
-        
-        if (layer === 0) {
-          gradient.addColorStop(0, accentColor);
-          gradient.addColorStop(0.5, primaryColor);
-          gradient.addColorStop(1, secondaryColor);
-        } else if (layer === 1) {
-          gradient.addColorStop(0, primaryColor);
-          gradient.addColorStop(1, secondaryColor);
+
+        if (isSea) {
+          if (layer === 0) {
+            gradient.addColorStop(0, 'rgba(45, 212, 191, 0.9)');
+            gradient.addColorStop(0.5, 'rgba(20, 184, 166, 0.8)');
+            gradient.addColorStop(1, 'rgba(13, 148, 136, 0.7)');
+          } else {
+            gradient.addColorStop(0, `rgba(13, 148, 136, ${0.8 - layer * 0.1})`);
+            gradient.addColorStop(1, `rgba(13, 148, 136, ${0.4 - layer * 0.1})`);
+          }
         } else {
-          gradient.addColorStop(0, secondaryColor);
-          gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          if (layer === 0) {
+            gradient.addColorStop(0, accentColor);
+            gradient.addColorStop(0.5, primaryColor);
+            gradient.addColorStop(1, secondaryColor);
+          } else if (layer === 1) {
+            gradient.addColorStop(0, primaryColor);
+            gradient.addColorStop(1, secondaryColor);
+          } else {
+            gradient.addColorStop(0, secondaryColor);
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          }
         }
 
         ctx.fillStyle = gradient;
         ctx.fill();
       }
 
+      // Add floating fishes for sea theme
+      if (isSea) {
+        const fishCount = 8;
+        for (let i = 0; i < fishCount; i++) {
+          const fishTime = time * 0.01 + i * 100;
+          const x = (Math.sin(fishTime * 0.5) * 0.5 + 0.5) * canvas.width;
+          const y = canvas.height * 0.6 + Math.cos(fishTime * 0.8) * 100 + (i * 40);
+          const size = 15 + Math.sin(fishTime) * 5;
+          const direction = Math.cos(fishTime * 0.5) > 0 ? 1 : -1;
+
+          ctx.save();
+          ctx.translate(x, y);
+          if (direction === -1) ctx.scale(-1, 1);
+
+          // Fish body
+          ctx.beginPath();
+          ctx.ellipse(0, 0, size, size * 0.6, 0, 0, Math.PI * 2);
+          ctx.fillStyle = `hsl(${200 + i * 20}, 80%, 60%)`;
+          ctx.fill();
+
+          // Tail
+          ctx.beginPath();
+          ctx.moveTo(-size * 0.8, 0);
+          ctx.lineTo(-size * 1.4, -size * 0.5);
+          ctx.lineTo(-size * 1.4, size * 0.5);
+          ctx.closePath();
+          ctx.fillStyle = `hsl(${200 + i * 20}, 80%, 50%)`;
+          ctx.fill();
+
+          // Eye
+          ctx.beginPath();
+          ctx.arc(size * 0.5, -size * 0.1, 2, 0, Math.PI * 2);
+          ctx.fillStyle = 'white';
+          ctx.fill();
+
+          ctx.restore();
+        }
+      }
+
       // Add celestial elements based on theme
       if (isDark) {
         // Dark mode: Moon and stars
-        
+
         // Moon
         const moonX = canvas.width * 0.8;
         const moonY = canvas.height * 0.15;
         const moonRadius = 30;
-        
+
         // Moon glow
         ctx.beginPath();
         ctx.arc(moonX, moonY, moonRadius + 10, 0, Math.PI * 2);
@@ -121,24 +187,24 @@ const CursorRevealBackground: React.FC = () => {
         moonGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
         ctx.fillStyle = moonGlow;
         ctx.fill();
-        
+
         // Moon body
         ctx.beginPath();
         ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.fill();
-        
+
         // Moon craters
         ctx.beginPath();
         ctx.arc(moonX - 8, moonY - 5, 4, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(200, 200, 200, 0.6)';
         ctx.fill();
-        
+
         ctx.beginPath();
         ctx.arc(moonX + 6, moonY + 8, 3, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(200, 200, 200, 0.6)';
         ctx.fill();
-        
+
         // Stars
         const stars = [
           { x: canvas.width * 0.1, y: canvas.height * 0.1 },
@@ -150,11 +216,11 @@ const CursorRevealBackground: React.FC = () => {
           { x: canvas.width * 0.15, y: canvas.height * 0.25 },
           { x: canvas.width * 0.85, y: canvas.height * 0.25 },
         ];
-        
+
         stars.forEach((star, i) => {
           const twinkle = Math.sin(time * 0.02 + i) * 0.3 + 0.7;
           const size = 2 + Math.sin(time * 0.03 + i) * 0.5;
-          
+
           // Star glow
           ctx.beginPath();
           ctx.arc(star.x, star.y, size * 2, 0, Math.PI * 2);
@@ -163,20 +229,20 @@ const CursorRevealBackground: React.FC = () => {
           starGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
           ctx.fillStyle = starGlow;
           ctx.fill();
-          
+
           // Star body
           ctx.beginPath();
           ctx.arc(star.x, star.y, size, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(255, 255, 255, ${twinkle})`;
           ctx.fill();
         });
-        
-      } else {
+
+      } else if (!isSea) {
         // Light mode: Sun
         const sunX = canvas.width * 0.8;
         const sunY = canvas.height * 0.15;
         const sunRadius = 35;
-        
+
         // Sun rays
         const rayCount = 12;
         for (let i = 0; i < rayCount; i++) {
@@ -186,7 +252,7 @@ const CursorRevealBackground: React.FC = () => {
           const startY = sunY + Math.sin(angle) * (sunRadius + 5);
           const endX = sunX + Math.cos(angle) * (sunRadius + rayLength);
           const endY = sunY + Math.sin(angle) * (sunRadius + rayLength);
-          
+
           ctx.beginPath();
           ctx.moveTo(startX, startY);
           ctx.lineTo(endX, endY);
@@ -194,7 +260,7 @@ const CursorRevealBackground: React.FC = () => {
           ctx.lineWidth = 2;
           ctx.stroke();
         }
-        
+
         // Sun glow
         ctx.beginPath();
         ctx.arc(sunX, sunY, sunRadius + 15, 0, Math.PI * 2);
@@ -204,7 +270,7 @@ const CursorRevealBackground: React.FC = () => {
         sunGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
         ctx.fillStyle = sunGlow;
         ctx.fill();
-        
+
         // Sun body
         ctx.beginPath();
         ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
@@ -212,7 +278,7 @@ const CursorRevealBackground: React.FC = () => {
         ctx.fill();
       }
 
-      time += 0.5; // Slower time progression for gentler movement
+      time += isSea ? 0.3 : 0.5; // Slower time progression for sea theme
       animationRef.current = requestAnimationFrame(drawWaves);
     };
 
@@ -252,7 +318,7 @@ const CursorRevealBackground: React.FC = () => {
         ref={canvasRef}
         className="w-full h-full opacity-40"
       />
-      
+
       {/* Revealed background through cursor circle */}
       <div
         className="absolute inset-0 transition-opacity duration-300"

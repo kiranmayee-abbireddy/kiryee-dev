@@ -9,7 +9,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-neutral-900 sea:bg-[#f5e6d3] text-neutral-900 dark:text-white sea:text-[#0f172a] transition-colors duration-300">
       <ScrollIndicator />
       <Header />
       <main>

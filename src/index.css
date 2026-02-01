@@ -25,10 +25,14 @@
 
 .scroll-line {
   width: 100%;
-  background: #000;
   border-radius: 1px;
   transform-origin: top;
   transition: all 0.1s ease-out;
+}
+
+/* Base Light/Dark Scroll Indicator */
+.scroll-line {
+  background: #000;
 }
 
 .dark .scroll-line {
@@ -40,26 +44,117 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom text selection colors that match theme */
+/* Custom text selection colors */
 ::selection {
   background-color: #000;
   color: #fff;
 }
 
-::-moz-selection {
-  background-color: #000;
-  color: #fff;
-}
-
-/* Dark mode text selection */
 .dark ::selection {
   background-color: #fff;
   color: #000;
 }
 
-.dark ::-moz-selection {
-  background-color: #fff;
-  color: #000;
+/* SEA THEME DEFINITION */
+.sea {
+  --bg-primary: #f5e6d3;
+  /* tan sand */
+  --bg-card: #e5d5b7;
+  /* darker tan sand */
+  --text-primary: #1e1b1c;
+  --accent-primary: #78350f;
+  /* wet sand brown */
+}
+
+.sea body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.sea .scroll-line {
+  background: var(--accent-primary) !important;
+}
+
+/* Force Uniform Section Background */
+.sea section {
+  background-color: var(--bg-primary) !important;
+}
+
+/* Cards & Containers - Darker Sand */
+.sea .bg-white:not(.filter-button-active),
+.sea .bg-neutral-50:not(.filter-button-active),
+.sea .bg-neutral-100:not(.filter-button-active):not(.filter-button-inactive):not(button),
+.sea .rounded-2xl.shadow-sm:not(button):not(.filter-button-inactive):not(.filter-button-active),
+.sea div[class*="bg-white"],
+.sea div[class*="bg-neutral-50"] {
+  background-color: var(--bg-card) !important;
+  border: 1px solid #dcc6a3 !important;
+  color: var(--text-primary) !important;
+}
+
+/* Text Inputs - Lighter body color */
+.sea input,
+.sea textarea,
+.sea select {
+  background-color: var(--bg-primary) !important;
+  border: 1px solid #dcc6a3 !important;
+  color: var(--text-primary) !important;
+}
+
+.sea input:focus,
+.sea textarea:focus {
+  border-color: var(--accent-primary) !important;
+  outline: none !important;
+}
+
+/* FILTER BUTTONS - Precise Targeting */
+.sea .filter-button-active {
+  background-color: var(--accent-primary) !important;
+  color: #fff !important;
+}
+
+.sea .filter-button-inactive {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid #dcc6a3 !important;
+}
+
+.sea .filter-button-inactive:hover {
+  background-color: #dcc6a3 !important;
+}
+
+/* Icons & Generic Buttons - Wet Sand Brown */
+.sea .bg-neutral-900:not(.filter-button-inactive):not(.filter-button-active),
+.sea .p-3.rounded-full:not(.filter-button-inactive):not(.filter-button-active),
+.sea .p-2.rounded-full:not(.filter-button-inactive):not(.filter-button-active),
+.sea button.bg-neutral-900:not(.filter-button-inactive):not(.filter-button-active),
+.sea a.bg-neutral-900 {
+  background-color: var(--accent-primary) !important;
+  color: #fff !important;
+}
+
+/* Icon Colors */
+.sea .bg-neutral-100 svg,
+.sea .bg-neutral-900 svg,
+.sea .p-3.rounded-full svg {
+  color: #fff !important;
+}
+
+/* Text Colors */
+.sea h3,
+.sea .text-neutral-900 {
+  color: var(--text-primary) !important;
+}
+
+.sea .text-neutral-600,
+.sea .text-neutral-500 {
+  color: #451a03 !important;
+}
+
+/* Selection */
+.sea ::selection {
+  background-color: var(--accent-primary);
+  color: #fff;
 }
 
 iframe {

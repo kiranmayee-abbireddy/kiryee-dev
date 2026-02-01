@@ -9,7 +9,7 @@ const Hero: React.FC = () => {
     e.stopPropagation();
     const targetElement = document.querySelector(href);
     if (targetElement) {
-      targetElement.scrollIntoView({ 
+      targetElement.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
   return (
     <section id="home" className="h-screen flex items-center justify-center relative overflow-hidden">
       <CursorRevealBackground />
-      <div className="container mx-auto px-6 h-full w-full flex justify-center items-center">
+      <div className="container mx-auto px-6 h-full w-full flex justify-center items-center relative z-10">
         <div className="max-w-4xl text-center">
           <motion.h1
             className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tighter mb-6"
@@ -51,14 +51,14 @@ const Hero: React.FC = () => {
             <a
               href="#projects"
               onClick={(e) => handleScrollToSection(e, '#projects')}
-              className="px-8 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-full font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-all"
+              className="px-8 py-3 bg-neutral-900 dark:bg-white sea:bg-[#78350f] text-white dark:text-neutral-900 sea:text-white rounded-full font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 sea:hover:bg-[#5d2a0c] transition-all"
             >
               View Projects
             </a>
             <a
               href="#contact"
               onClick={(e) => handleScrollToSection(e, '#contact')}
-              className="px-8 py-3 border border-neutral-300 dark:border-neutral-700 rounded-full font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+              className="px-8 py-3 border border-neutral-300 dark:border-neutral-700 sea:border-[#78350f] sea:text-[#78350f] rounded-full font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 sea:hover:bg-[#f5e6d3] transition-all"
             >
               Contact Me
             </a>
@@ -67,7 +67,7 @@ const Hero: React.FC = () => {
       </div>
 
       <motion.div
-        className="absolute bottom-12 inset-x-0 flex flex-col items-center"
+        className="absolute bottom-12 inset-x-0 flex flex-col items-center z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.8 }}

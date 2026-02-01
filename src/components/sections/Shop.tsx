@@ -73,11 +73,10 @@ export default function UiverseGallery() {
         transition={{ duration: 0.5, delay: 0.3 }}
       >
         <button
-          className={`px-4 py-2 text-sm rounded-full transition-colors ${
-            selectedCategory === null
-              ? "bg-black text-white dark:bg-white dark:text-black"
-              : "bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700"
-          }`}
+          className={`px-4 py-2 text-sm rounded-full transition-colors ${selectedCategory === null
+            ? "bg-black text-white dark:bg-white dark:text-black filter-button-active"
+            : "bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 filter-button-inactive"
+            }`}
           onClick={() => setSelectedCategory(null)}
         >
           All ({galleryItems.length})
@@ -87,11 +86,10 @@ export default function UiverseGallery() {
           return (
             <button
               key={cat}
-              className={`px-4 py-2 text-sm rounded-full transition-colors ${
-                selectedCategory === cat
-                  ? "bg-black text-white dark:bg-white dark:text-black"
-                  : "bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700"
-              }`}
+              className={`px-4 py-2 text-sm rounded-full transition-colors ${selectedCategory === cat
+                ? "bg-black text-white dark:bg-white dark:text-black filter-button-active"
+                : "bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 filter-button-inactive"
+                }`}
               onClick={() => setSelectedCategory(cat)}
             >
               {cat} ({count})
