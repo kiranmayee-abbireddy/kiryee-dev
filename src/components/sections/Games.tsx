@@ -215,15 +215,15 @@ const Games: React.FC = () => {
                 </p>
               </div>
 
-              <div className={`relative z-10 mt-auto flex ${game.apkLink ? 'flex-col sm:flex-row items-stretch sm:items-center' : 'justify-center'} gap-4`}>
+              <div className="relative z-10 mt-auto flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
                 <a
                   href={game.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${game.apkLink ? 'flex-1' : 'w-fit px-12'} flex items-center justify-center gap-2 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-bold text-sm tracking-tight hover:shadow-xl hover:shadow-neutral-500/10 transition-all active:scale-[0.98] group/btn`}
+                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-bold text-sm tracking-tight hover:shadow-xl hover:shadow-neutral-500/10 transition-all active:scale-[0.98] group/btn"
                 >
                   <Play size={18} className="fill-current group-hover/btn:translate-x-0.5 transition-transform" />
-                  PLAY
+                  PLAY WEB
                 </a>
                 {game.apkLink && (
                   <a
@@ -233,7 +233,7 @@ const Games: React.FC = () => {
                     className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white rounded-xl font-bold text-sm tracking-tight border-2 border-neutral-900/5 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700/50 hover:border-neutral-900/10 transition-all active:scale-[0.98] group/btn shadow-sm"
                   >
                     <Download size={18} className="group-hover/btn:-translate-y-0.5 transition-transform" />
-                    APK
+                    GET APK
                   </a>
                 )}
               </div>
