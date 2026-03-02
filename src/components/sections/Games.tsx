@@ -80,7 +80,8 @@ const Games: React.FC = () => {
       description: 'A word-chain game where players stack and form a word like block blast.',
       link: 'https://kiranmayee-abbireddy.github.io/letter-drop/',
       difficulty: 'Educational',
-      svg: '/block.svg'
+      svg: '/block.svg',
+      apkLink: '/letterdrop.apk',
     },
     {
       id: 2,
