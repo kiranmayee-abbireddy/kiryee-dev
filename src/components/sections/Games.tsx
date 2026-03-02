@@ -9,7 +9,7 @@ interface Game {
   description: string;
   link: string;
   apkLink?: string;
-  difficulty?: 'Easy' | 'Medium' | 'Hard';
+  difficulty?: 'Challenge' | 'Entertainment' | 'Brain Teaser' | 'Educational';
   svg: string;
 }
 
@@ -63,7 +63,7 @@ const Games: React.FC = () => {
       title: 'Noct',
       description: 'Restore the light to the world by collecting stars',
       link: 'https://noctit.netlify.app/',
-      difficulty: 'Medium',
+      difficulty: 'Entertainment',
       svg: '/jump.svg'
     },
     {
@@ -71,7 +71,7 @@ const Games: React.FC = () => {
       title: '9-to-5 Knockout',
       description: 'Knock out your manager by following and colliding with him',
       link: 'https://kiranmayee-abbireddy.github.io/9-to-5-knockout/',
-      difficulty: 'Medium',
+      difficulty: 'Entertainment',
       svg: '/knockout.svg'
     },
     {
@@ -79,7 +79,7 @@ const Games: React.FC = () => {
       title: 'Letter Drop',
       description: 'A word-chain game where players stack and form a word like block blast.',
       link: 'https://kiranmayee-abbireddy.github.io/letter-drop/',
-      difficulty: 'Medium',
+      difficulty: 'Educational',
       svg: '/block.svg'
     },
     {
@@ -87,7 +87,7 @@ const Games: React.FC = () => {
       title: 'Spell Steps',
       description: 'Educational game teaching spelling through interactive tiles.',
       link: 'https://kiranmayee-abbireddy.github.io/spell-steps/',
-      difficulty: 'Easy',
+      difficulty: 'Educational',
       svg: '/stairs.svg',
       apkLink: '/spellsteps.apk',
     },
@@ -96,7 +96,7 @@ const Games: React.FC = () => {
       title: 'The Last Letter',
       description: 'A timed typing game where players race to type falling letters before they vanish.',
       link: 'https://kiranmayee-abbireddy.github.io/the-last-letter/',
-      difficulty: 'Medium',
+      difficulty: 'Educational',
       svg: '/keyboard.svg'
     },
     {
@@ -104,7 +104,7 @@ const Games: React.FC = () => {
       title: 'Bubble Fish',
       description: 'An underwater bubble dodging game with playful animation.',
       link: 'https://kiranmayee-abbireddy.github.io/bubble-fish/',
-      difficulty: 'Easy',
+      difficulty: 'Entertainment',
       svg: '/fish.svg'
     },
     {
@@ -112,7 +112,7 @@ const Games: React.FC = () => {
       title: 'Orbital Escape',
       description: 'A space-themed escape game avoiding orbital debris.',
       link: 'https://kiranmayee-abbireddy.github.io/orbital-escape/',
-      difficulty: 'Hard',
+      difficulty: 'Entertainment',
       svg: '/rocket.svg'
     },
     {
@@ -120,7 +120,7 @@ const Games: React.FC = () => {
       title: 'Paper Plane Wind Adventure',
       description: 'Guide a paper plane through windy paths in an aesthetic journey.',
       link: 'https://kiranmayee-abbireddy.github.io/paper-plane-wind-adventure/',
-      difficulty: 'Medium',
+      difficulty: 'Challenge',
       svg: '/paperplane.svg'
     },
     {
@@ -128,7 +128,7 @@ const Games: React.FC = () => {
       title: 'Parallel Love',
       description: 'A dual-character story-based side-scroller exploring long-distance love.',
       link: 'https://kiranmayee-abbireddy.github.io/Parallel-love/',
-      difficulty: 'Medium',
+      difficulty: 'Entertainment',
       svg: '/love.svg'
     },
     {
@@ -136,7 +136,7 @@ const Games: React.FC = () => {
       title: 'Echo Speller',
       description: 'Listen carefully and type the word correctly.',
       link: 'https://echo-speller.netlify.app/',
-      difficulty: 'Medium',
+      difficulty: 'Brain Teaser',
       svg: '/echo.svg'
     },
     {
@@ -144,7 +144,7 @@ const Games: React.FC = () => {
       title: 'Color Coded Words',
       description: 'The Stroop Effect makes your brain work harder when color and meaning conflict!',
       link: 'https://color-coded-words.netlify.app/',
-      difficulty: 'Hard',
+      difficulty: 'Brain Teaser',
       svg: '/color.svg'
     },
     {
@@ -152,7 +152,7 @@ const Games: React.FC = () => {
       title: 'Emoji Decoder',
       description: 'Match emoji sequences with real-world meanings.',
       link: 'https://emoji-decode.netlify.app/',
-      difficulty: 'Easy',
+      difficulty: 'Brain Teaser',
       svg: '/emoji.svg'
     }
   ];
