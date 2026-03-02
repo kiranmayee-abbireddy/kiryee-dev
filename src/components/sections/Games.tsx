@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Play, Gamepad2 } from 'lucide-react';
+import { Play, Gamepad2, Download } from 'lucide-react';
 
 interface Game {
   id: number;
   title: string;
   description: string;
   link: string;
+  apkLink?: string;
   difficulty?: 'Easy' | 'Medium' | 'Hard';
+  svg: string;
 }
 
 const AnimatedSVGBackground = ({ svg }: { svg: string }) => {
@@ -86,7 +88,8 @@ const Games: React.FC = () => {
       description: 'Educational game teaching spelling through interactive tiles.',
       link: 'https://kiranmayee-abbireddy.github.io/spell-steps/',
       difficulty: 'Easy',
-      svg: '/stairs.svg'
+      svg: '/stairs.svg',
+      apkLink: '/spellsteps.apk',
     },
     {
       id: 3,
@@ -212,15 +215,28 @@ const Games: React.FC = () => {
                 </p>
               </div>
 
-              <a
-                href={game.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative z-10 mt-auto w-fit self-center flex items-center justify-center gap-2 px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-lg font-medium hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-all group-hover:scale-105"
-              >
-                <Play size={18} />
-                Play Game
-              </a>
+              <div className="relative z-10 mt-auto flex flex-wrap gap-2 justify-center">
+                <a
+                  href={game.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-lg font-medium hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-all group-hover:scale-105"
+                >
+                  <Play size={16} />
+                  Play Web
+                </a>
+                {game.apkLink && (
+                  <a
+                    href={game.apkLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white rounded-lg font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all group-hover:scale-105 border border-neutral-200 dark:border-neutral-700"
+                  >
+                    <Download size={16} />
+                    APK
+                  </a>
+                )}
+              </div>
 
             </motion.div>
           ))}

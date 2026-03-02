@@ -8,7 +8,7 @@ interface DesktopApp {
   title: string;
   description: string;
   link: string;
-  platform: 'Windows' | 'Mac' | 'Linux' | 'Cross-platform';
+  platform: 'Windows' | 'Mac' | 'Linux' | 'Cross-platform' | 'Android';
   size?: string;
 }
 
@@ -43,6 +43,14 @@ const DesktopApps: React.FC = () => {
       link: '/CleanSweep.exe',
       platform: 'Windows',
       size: '14 MB'
+    },
+    {
+      id: 4,
+      title: 'Lumi Flow',
+      description: 'A dynamic lighting control system for your smart environment. Manage colors, schedules, and patterns with a beautiful, intuitive mobile interface.',
+      link: '/LumiFlow.apk',
+      platform: 'Android',
+      size: '12 MB'
     }
   ];
 
@@ -54,6 +62,8 @@ const DesktopApps: React.FC = () => {
         return <Smartphone size={16} />;
       case 'Linux':
         return <Monitor size={16} />;
+      case 'Android':
+        return <Smartphone size={16} />;
       default:
         return <Monitor size={16} />;
     }
@@ -69,7 +79,7 @@ const DesktopApps: React.FC = () => {
             animate={inView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Desktop Applications
+            Native Applications
           </motion.p>
           <motion.h2
             className="text-3xl md:text-4xl font-bold tracking-tight mb-6"
@@ -77,7 +87,7 @@ const DesktopApps: React.FC = () => {
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Desktop Apps
+            Native Apps
           </motion.h2>
           <motion.p
             className="text-lg text-neutral-700 dark:text-neutral-300"
@@ -85,7 +95,7 @@ const DesktopApps: React.FC = () => {
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Powerful desktop applications designed to enhance your productivity and workflow.
+            Powerful applications designed to enhance your productivity and workflow across different platforms.
           </motion.p>
         </div>
 
