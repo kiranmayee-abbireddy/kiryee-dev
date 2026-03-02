@@ -43,11 +43,36 @@ const Contact: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Here you would typically send the form data to your backend
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "1ba713fe-6bb9-49cf-8bf9-de40b3292780",
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 5000);
+      } else {
+        console.error("Web3Forms Error:", result);
+        setSubmitStatus('error');
+      }
     } catch (error) {
+      console.error("Submission Error:", error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
