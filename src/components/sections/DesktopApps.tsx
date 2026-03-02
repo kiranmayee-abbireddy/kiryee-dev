@@ -43,14 +43,6 @@ const DesktopApps: React.FC = () => {
       link: '/CleanSweep.exe',
       platform: 'Windows',
       size: '14 MB'
-    },
-    {
-      id: 4,
-      title: 'Lumi Flow',
-      description: 'A dynamic lighting control system for your smart environment. Manage colors, schedules, and patterns with a beautiful, intuitive mobile interface.',
-      link: '/LumiFlow.apk',
-      platform: 'Android',
-      size: '12 MB'
     }
   ];
 

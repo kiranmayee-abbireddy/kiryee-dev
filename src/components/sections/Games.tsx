@@ -215,25 +215,25 @@ const Games: React.FC = () => {
                 </p>
               </div>
 
-              <div className="relative z-10 mt-auto flex flex-wrap gap-2 justify-center">
+              <div className="relative z-10 mt-auto flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
                 <a
                   href={game.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-lg font-medium hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-all group-hover:scale-105"
+                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-bold text-sm tracking-tight hover:shadow-xl hover:shadow-neutral-500/10 transition-all active:scale-[0.98] group/btn"
                 >
-                  <Play size={16} />
-                  Play Web
+                  <Play size={18} className="fill-current group-hover/btn:translate-x-0.5 transition-transform" />
+                  PLAY WEB
                 </a>
                 {game.apkLink && (
                   <a
                     href={game.apkLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white rounded-lg font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all group-hover:scale-105 border border-neutral-200 dark:border-neutral-700"
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white rounded-xl font-bold text-sm tracking-tight border-2 border-neutral-900/5 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700/50 hover:border-neutral-900/10 transition-all active:scale-[0.98] group/btn shadow-sm"
                   >
-                    <Download size={16} />
-                    APK
+                    <Download size={18} className="group-hover/btn:-translate-y-0.5 transition-transform" />
+                    GET APK
                   </a>
                 )}
               </div>
