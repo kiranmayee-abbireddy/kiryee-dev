@@ -65,6 +65,14 @@ const Games: React.FC = () => {
       svg: '/jump.svg'
     },
     {
+      id: 12,
+      title: '9-to-5 Knockout',
+      description: 'Knock out your manager by following and colliding with him',
+      link: 'https://kiranmayee-abbireddy.github.io/9-to-5-knockout/',
+      difficulty: 'Medium',
+      svg: '/knockout.svg'
+    },
+    {
       id: 1,
       title: 'Letter Drop',
       description: 'A word-chain game where players stack and form a word like block blast.',
