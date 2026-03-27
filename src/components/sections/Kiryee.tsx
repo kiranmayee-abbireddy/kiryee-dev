@@ -2,6 +2,87 @@ import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Matter from 'matter-js';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../../context/ThemeContext';
+
+const UnderwaterBackdrop: React.FC<{ inView: boolean }> = ({ inView }) => {
+  const { theme } = useTheme();
+  const isSea = theme === 'sea';
+  const isDark = theme === 'dark';
+
+  const HeroFish = ({ index }: { index: number }) => {
+    const hue = isSea ? (200 + index * 30) : 0;
+    const bodyColor = isSea
+      ? `hsl(${hue}, 80%, 60%)`
+      : isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+    const tailColor = isSea
+      ? `hsl(${hue}, 80%, 50%)`
+      : isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+
+    return (
+      <svg width="45" height="25" viewBox="-20 -10 40 20">
+        <path d="M -12 0 L -21 -7 L -21 7 Z" fill={tailColor} />
+        <ellipse cx="0" cy="0" rx="15" ry="9" fill={bodyColor} />
+        <circle cx="7.5" cy="-1.5" r="2" fill={isDark && !isSea ? 'rgba(120,120,120,0.5)' : 'white'} />
+      </svg>
+    );
+  };
+
+  const [fishGroup, setFishGroup] = useState<any[]>([]);
+
+  useEffect(() => {
+    const newFishes = [...Array(15)].map((_, i) => ({
+      id: i,
+      fromLeft: Math.random() > 0.5,
+      y: Math.random() * 90 + 5, // spread across % of height
+      delay: Math.random() * 20,
+      duration: 25 + Math.random() * 25,
+      scale: 0.4 + Math.random() * 0.6,
+    }));
+    setFishGroup(newFishes);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+      <motion.div
+        className="w-full h-full relative backdrop-blur-[1px]"
+        style={{
+          backgroundColor: isSea
+            ? 'rgba(118, 192, 179, 0.4)' 
+            : isDark
+              ? 'rgba(255, 255, 255, 0.05)'
+              : 'rgba(0, 0, 0, 0.05)'
+        }}
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1 }}
+      >
+        {fishGroup.map((fish) => (
+          <motion.div
+            key={fish.id}
+            className="absolute"
+            style={{ 
+              top: `${fish.y}%`,
+              left: fish.fromLeft ? '-150px' : '105%',
+              scale: fish.scale,
+              scaleX: fish.fromLeft ? 1 : -1
+            }}
+            animate={{
+              left: fish.fromLeft ? '105%' : '-150px',
+            }}
+            transition={{
+              duration: fish.duration,
+              repeat: Infinity,
+              ease: "linear",
+              delay: fish.delay
+            }}
+          >
+            <HeroFish index={fish.id} />
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  );
+};
 
 const STATES = {
   INTRO: 'intro',
@@ -16,7 +97,7 @@ const LETTERS = ['K', 'I', 'R', 'Y', 'E', 'E'];
 
 export default function Kiryee() {
   const [state, setState] = useState(STATES.INTRO);
-  const { ref: sectionRef, inView } = useInView({ threshold: 0.5 });
+  const { ref: sectionRef, inView } = useInView({ threshold: 0.1 });
   
   const containerRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Matter.Engine | null>(null);
@@ -266,8 +347,12 @@ export default function Kiryee() {
   return (
     <section 
       ref={sectionRef} 
-      className="relative w-full min-h-screen bg-white dark:bg-neutral-900 sea:bg-[#f5e6d3] overflow-hidden flex flex-col items-center justify-center transition-colors duration-300 border-t border-neutral-200 dark:border-neutral-800 sea:border-[#d4c5b0]"
+      className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center transition-colors duration-300 border-t border-neutral-200 dark:border-neutral-800 sea:border-[#d4c5b0]
+        bg-white dark:bg-neutral-900 sea:bg-[#f5e6d3]
+        bg-gradient-to-b from-transparent to-neutral-50 dark:to-black/30 sea:to-[#e8d5bc]/40"
     >
+      <UnderwaterBackdrop inView={inView} />
+
       {/* Physics Interactive Container */}
       <div 
         ref={containerRef} 
