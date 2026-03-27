@@ -1,4 +1,3 @@
-import React from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Layout from './components/layout/Layout';
 import Hero from './components/sections/Hero';
@@ -12,6 +11,7 @@ import Contact from './components/sections/Contact';
 import ThemeProvider from './context/ThemeContext';
 import CustomCursor from './components/ui/CustomCursor';
 import RedbubbleShop from './components/sections/Shop';
+import Kiryee from './components/sections/Kiryee';
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
           <Certifications />
           <RedbubbleShop />
           <Contact />
+          <Kiryee />
         </Layout>
       </AnimatePresence>
     </ThemeProvider>
