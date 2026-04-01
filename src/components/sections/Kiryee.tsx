@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Matter from 'matter-js';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -112,6 +112,20 @@ export default function Kiryee() {
 
   const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
 
+  // Reactive dimensions
+  const dims = useMemo(() => {
+    if (containerSize.w === 0) return { letterWidth: 120, letterHeight: 160, spacing: 30 };
+    
+    const isSmall = containerSize.w < 768;
+    const letterWidth = isSmall 
+      ? Math.max(40, Math.min(containerSize.w / 7.5, 90)) 
+      : 120;
+    const spacing = isSmall ? letterWidth / 4 : 30;
+    const letterHeight = letterWidth * 1.33;
+    
+    return { letterWidth, letterHeight, spacing };
+  }, [containerSize.w]);
+
   // Update container size on mount/resize
   useEffect(() => {
     const updateSize = () => {
@@ -195,16 +209,14 @@ export default function Kiryee() {
     };
   }, [containerSize]);
 
-  // Handle Initial State & Letter Positioning (Before Drop)
+  // Handle Initial State & Letter Positioning (Calculates target positions)
   useEffect(() => {
-    if (state === STATES.INTRO && containerSize.w > 0) {
-      // Calculate perfect initial positions
-      const letterWidth = window.innerWidth < 640 ? 60 : 120;
-      const spacing = window.innerWidth < 640 ? 10 : 30;
+    if (containerSize.w > 0) {
+      const { letterWidth, spacing } = dims;
       const totalWidth = (6 * letterWidth) + (5 * spacing);
       
       const startX = (containerSize.w - totalWidth) / 2 + (letterWidth / 2);
-      const startY = containerSize.h / 2; // middle of the container
+      const startY = containerSize.h / 2;
 
       const positions = LETTERS.map((_, i) => ({
         x: startX + i * (letterWidth + spacing),
@@ -212,23 +224,30 @@ export default function Kiryee() {
       }));
       initialPositionsRef.current = positions;
 
-      setLetterStyles(positions.map(p => ({ x: p.x, y: p.y, angle: 0 })));
+      if (state === STATES.INTRO) {
+        setLetterStyles(positions.map(p => ({ x: p.x, y: p.y, angle: 0 })));
+      } else if (state === STATES.ALIGNED) {
+        // Update bodies to new positions if resized during aligned state
+        bodiesRef.current.forEach((body, i) => {
+          const target = positions[i];
+          Matter.Body.setPosition(body, { x: target.x, y: target.y });
+        });
+      }
     }
-  }, [state, containerSize]);
+  }, [containerSize, state, dims]);
 
   // Sequence: Intro -> Drop
   useEffect(() => {
     if (inView && state === STATES.INTRO && !droppedOnceRef.current) {
       droppedOnceRef.current = true;
       
-      // Sequence: Text fades out -> Letters Drop
       setTimeout(() => {
         setState(STATES.DROPPING);
         
         setTimeout(() => {
           enablePhysics();
         }, 200);
-      }, 2000); // 2 seconds of intro before it decides to drop
+      }, 2000);
     }
   }, [inView, state]);
 
@@ -237,10 +256,8 @@ export default function Kiryee() {
     if (!engineRef.current) return;
     setState(STATES.PLAY);
 
-    const letterWidth = window.innerWidth < 640 ? 60 : 120;
-    const letterHeight = window.innerWidth < 640 ? 80 : 160;
+    const { letterWidth, letterHeight } = dims;
 
-    // Create bodies at current positions (which are the perfect ones)
     const newBodies = initialPositionsRef.current.map((pos) => {
       const body = Matter.Bodies.rectangle(pos.x, pos.y, letterWidth, letterHeight, {
         restitution: 0.6,
@@ -248,7 +265,6 @@ export default function Kiryee() {
         frictionAir: 0.01,
         density: 0.05
       });
-      // Add huge initial velocity to make them completely swap/scatter
       Matter.Body.setVelocity(body, {
         x: (Math.random() - 0.5) * 50,
         y: -10 - Math.random() * 20
@@ -261,7 +277,7 @@ export default function Kiryee() {
     Matter.World.add(engineRef.current.world, newBodies);
   };
 
-  // Alignment Check (only during PLAY mode)
+  // Alignment Check
   useEffect(() => {
     if (state !== STATES.PLAY) return;
 
@@ -271,7 +287,11 @@ export default function Kiryee() {
       let isAligned = true;
       const bodiesInfo = bodiesRef.current.map(b => ({ x: b.position.x, y: b.position.y }));
 
-      // Check horizontal sequence and spacing
+      // Use current dims for checking alignment
+      const { letterWidth, spacing } = dims;
+      const expectedDistMin = (letterWidth + spacing) * 0.7;
+      const expectedDistMax = (letterWidth + spacing) * 1.3;
+
       for (let i = 0; i < 5; i++) {
         const curr = bodiesInfo[i];
         const next = bodiesInfo[i + 1];
@@ -282,31 +302,28 @@ export default function Kiryee() {
         }
         
         const xDist = next.x - curr.x;
-        if (xDist < 20 || xDist > 160) {
+        if (xDist < expectedDistMin || xDist > expectedDistMax) {
           isAligned = false;
           break;
         }
       }
 
-      // Check vertical roughly inline
       if (isAligned) {
         const yVals = bodiesInfo.map(b => b.y);
         const minY = Math.min(...yVals);
         const maxY = Math.max(...yVals);
         
-        if (maxY - minY > 60) {
+        if (maxY - minY > (dims.letterHeight * 0.4)) {
           isAligned = false;
         }
       }
 
       if (isAligned) {
         setState(STATES.ALIGNED);
-        // Snap into place
         bodiesRef.current.forEach((body, i) => {
           const target = initialPositionsRef.current[i];
           Matter.Body.setStatic(body, true);
           Matter.Body.setPosition(body, { x: target.x, y: target.y });
-          // Normalize angle to the nearest full rotation to prevent wild spinning in CSS transition
           const closestAngle = Math.round(body.angle / (2 * Math.PI)) * (2 * Math.PI);
           Matter.Body.setAngle(body, closestAngle);
         });
@@ -314,7 +331,7 @@ export default function Kiryee() {
     }, 500);
 
     return () => clearInterval(checkInterval);
-  }, [state]);
+  }, [state, dims]);
 
   // Chaos Trigger
   const triggerChaos = () => {
@@ -329,7 +346,6 @@ export default function Kiryee() {
         x: forceMultiplier,
         y: upForce
       });
-      // slight rotate
       Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.5);
     });
 
@@ -341,8 +357,7 @@ export default function Kiryee() {
     }, 2000);
   };
 
-  const letterWidth = typeof window !== 'undefined' ? (window.innerWidth < 640 ? 60 : 120) : 120;
-  const letterHeight = typeof window !== 'undefined' ? (window.innerWidth < 640 ? 80 : 160) : 160;
+  const { letterWidth, letterHeight } = dims;
 
   return (
     <section 
@@ -359,7 +374,7 @@ export default function Kiryee() {
         className="absolute inset-0 w-full h-full z-10" 
         style={{ 
           pointerEvents: (state === STATES.CHAOS || state === STATES.OUTRO) ? 'none' : 'auto',
-          touchAction: 'pan-y'
+          touchAction: 'none'
         }}
       />
 
@@ -383,11 +398,11 @@ export default function Kiryee() {
               top: 0,
               width: letterWidth,
               height: letterHeight,
-              fontSize: window.innerWidth < 640 ? '5rem' : '10rem',
+              fontSize: `${letterWidth * 1.25}px`, // Scaled font size
               transform: `translate(${style.x - letterWidth / 2}px, ${style.y - letterHeight / 2}px) rotate(${style.angle}rad)`,
               transition: state === STATES.INTRO || state === STATES.ALIGNED 
                 ? 'transform 0.3s ease-out, color 0.3s ease-out, filter 0.3s ease-out' 
-                : 'color 0.3s ease-out, filter 0.3s ease-out' // let Matter.js handle pos instantly during playback
+                : 'color 0.3s ease-out, filter 0.3s ease-out'
             }}
           >
             {LETTERS[i]}
@@ -397,7 +412,7 @@ export default function Kiryee() {
 
       {/* Overlay Text Container */}
       <div 
-        className="absolute top-[20%] w-full text-center pointer-events-none z-30" 
+        className="absolute top-[20%] w-full text-center pointer-events-none z-30 px-4" 
         style={{ pointerEvents: state === STATES.ALIGNED ? 'auto' : 'none' }}
       >
         <AnimatePresence mode="wait">
@@ -407,7 +422,7 @@ export default function Kiryee() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
-              className="text-xl md:text-2xl font-medium text-neutral-600 dark:text-neutral-400 sea:text-[#451a03]"
+              className="text-xl md:text-2xl font-medium text-neutral-600 dark:text-neutral-400 sea:text-[#451a03] px-4"
             >
               <p>This is KIRYEE. Handle with care.</p>
               <p className="text-sm opacity-70 mt-2">Or don't.</p>
@@ -433,7 +448,7 @@ export default function Kiryee() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
-              className="text-xl md:text-3xl font-bold text-neutral-900 dark:text-white sea:text-[#78350f]"
+              className="text-xl md:text-3xl font-bold text-neutral-900 dark:text-white sea:text-[#78350f] px-4"
             >
               You had one job... and you ruined it.
             </motion.div>
