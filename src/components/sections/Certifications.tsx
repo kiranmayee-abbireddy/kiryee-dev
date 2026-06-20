@@ -18,7 +18,7 @@ const Certifications: React.FC = () => {
     {
       title: 'AI Agents Course (GAIA: 100/100)',
       issuer: 'Hugging Face',
-      link: 'https://huggingface.co/learn/agents-course'
+      link: 'https://huggingface.co/datasets/agents-course/final-certificates/resolve/main/certificates/kiranmayee-abbireddy/2026-06-19.png'
     },
     {
       title: 'Scientific Computing with Python',
