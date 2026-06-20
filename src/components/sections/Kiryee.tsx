@@ -362,7 +362,7 @@ export default function Kiryee() {
   return (
     <section 
       ref={sectionRef} 
-      className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center transition-colors duration-300 border-t border-neutral-200 dark:border-neutral-800 sea:border-[#d4c5b0]
+      className="hidden lg:flex relative w-full min-h-screen overflow-hidden flex-col items-center justify-center transition-colors duration-300 border-t border-neutral-200 dark:border-neutral-800 sea:border-[#d4c5b0]
         bg-white dark:bg-neutral-900 sea:bg-[#f5e6d3]
         bg-gradient-to-b from-transparent to-neutral-50 dark:to-black/30 sea:to-[#e8d5bc]/40"
     >
