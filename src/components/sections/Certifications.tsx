@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Award } from 'lucide-react';
+import { Award, BrainCircuit } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 const Certifications: React.FC = () => {
@@ -15,6 +15,13 @@ const Certifications: React.FC = () => {
   const isDark = theme === 'dark';
 
   const certifications = [
+    {
+      title: 'AI Agents Course (GAIA Benchmark: 100/100)',
+      issuer: 'Hugging Face',
+      link: 'https://huggingface.co/learn/agents-course',
+      description: 'Successfully completed the Hugging Face Agents Course. Progressively improved agent evaluation scores from 25 → 40 → 95 → 100/100, achieving a perfect score on the GAIA-based final evaluation.',
+      isFeatured: true
+    },
     {
       title: 'Scientific Computing with Python',
       issuer: 'freeCodeCamp',
@@ -42,7 +49,7 @@ const Certifications: React.FC = () => {
             animate={inView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Certifications
+            Certifications & Achievements
           </motion.p>
           <motion.h2
             className="text-3xl md:text-4xl font-bold tracking-tight mb-6"
@@ -54,36 +61,49 @@ const Certifications: React.FC = () => {
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {certifications.map((cert, index) => (
             <motion.div
               key={index}
-              className="bg-white dark:bg-neutral-900 p-8 rounded-2xl shadow-sm flex justify-between items-start group hover:shadow-md transition-all relative overflow-hidden"
+              className={`bg-white dark:bg-neutral-900 p-8 rounded-2xl shadow-sm flex justify-between items-start group hover:shadow-md transition-all relative overflow-hidden border border-neutral-200 dark:border-neutral-800 ${
+                cert.isFeatured ? 'md:col-span-2 border-neutral-350 dark:border-neutral-700 bg-gradient-to-br from-white to-neutral-50 dark:from-neutral-900 dark:to-neutral-950' : ''
+              }`}
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
             >
-              <div className="flex-1 relative z-10">
+              <div className="flex-1 relative z-10 pr-4">
                 <div className="mb-4 p-3 inline-block rounded-full bg-neutral-100 dark:bg-neutral-800 sea:bg-[#78350f]">
-                  <Award size={24} className="sea:text-white" />
+                  {cert.isFeatured ? (
+                    <BrainCircuit size={24} className="sea:text-white text-neutral-800 dark:text-white" />
+                  ) : (
+                    <Award size={24} className="sea:text-white text-neutral-800 dark:text-white" />
+                  )}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{cert.title}</h3>
-                <p className="text-neutral-600 dark:text-neutral-400 mb-6">{cert.issuer}</p>
+                <h3 className="text-xl font-bold mb-1 text-neutral-900 dark:text-white">{cert.title}</h3>
+                <p className="text-sm font-semibold text-neutral-600 dark:text-neutral-400 mb-3">{cert.issuer}</p>
+                
+                {cert.description && (
+                  <p className="text-sm text-neutral-750 dark:text-neutral-300 mb-6 leading-relaxed max-w-2xl">
+                    {cert.description}
+                  </p>
+                )}
+                
                 <a
                   href={cert.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm font-medium hover:underline transition-colors inline-block"
                 >
-                  View Certificate →
+                  View Credential →
                 </a>
               </div>
 
               <div
-                className={`absolute right-[-10%] bottom-[-5%] w-48 h-auto transition-all duration-500 transform group-hover:scale-110 pointer-events-none
+                className={`absolute right-[-5%] bottom-[-10%] w-40 h-auto transition-all duration-500 transform group-hover:scale-105 pointer-events-none
                   ${isSea
-                    ? 'opacity-30 group-hover:opacity-60'
-                    : isDark ? 'opacity-20 grayscale brightness-110 group-hover:opacity-40' : 'opacity-10 grayscale group-hover:opacity-20'}`}
+                    ? 'opacity-20 group-hover:opacity-40'
+                    : isDark ? 'opacity-15 grayscale brightness-110 group-hover:opacity-30' : 'opacity-10 grayscale group-hover:opacity-15'}`}
               >
                 <img
                   src="/certificate.svg"
@@ -92,9 +112,6 @@ const Certifications: React.FC = () => {
                   style={{ aspectRatio: '466/757' }}
                 />
               </div>
-
-              {/* Subtle background decoration for Sea theme */}
-              <div className="absolute top-0 right-0 w-32 h-32 -mr-8 -mt-8 bg-neutral-100 dark:bg-neutral-800 sea:bg-[#78350f]/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </motion.div>
           ))}
         </div>

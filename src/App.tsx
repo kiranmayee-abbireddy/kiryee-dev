@@ -4,7 +4,6 @@ import Hero from './components/sections/Hero';
 import About from './components/sections/About';
 import Experience from './components/sections/Experience';
 import FeaturedProject from './components/sections/FeaturedProject';
-import AiMl from './components/sections/AiMl';
 import Projects from './components/sections/Projects';
 import DesktopApps from './components/sections/DesktopApps';
 import Games from './components/sections/Games';
@@ -25,7 +24,6 @@ function App() {
           <About />
           <Experience />
           <FeaturedProject />
-          <AiMl />
           <Projects />
           <Games />
           <DesktopApps />
