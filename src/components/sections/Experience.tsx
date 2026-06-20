@@ -143,7 +143,7 @@ const Experience: React.FC = () => {
       if (isDark) return 'text-neutral-400';
       return 'text-neutral-500';
     }
-    return 'text-neutral-455 dark:text-neutral-550';
+    return 'text-neutral-500 dark:text-neutral-400';
   };
 
   const getBodyTextColor = () => {
@@ -188,7 +188,7 @@ const Experience: React.FC = () => {
             From Intern to Lead Developer
           </motion.h2>
           <motion.p
-            className="text-lg text-neutral-700 dark:text-neutral-350 max-w-3xl mx-auto"
+            className="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.2 }}
