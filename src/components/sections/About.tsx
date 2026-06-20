@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Code, Database, Layout, Terminal, GitBranch, Monitor } from 'lucide-react';
+import { Code, Database, Layout, Terminal, GitBranch, Monitor, Layers, Cpu, Wrench } from 'lucide-react';
 
 const About: React.FC = () => {
   const [ref, inView] = useInView({
@@ -13,32 +13,47 @@ const About: React.FC = () => {
     {
       name: 'Languages',
       icon: <Code size={24} />,
-      description: 'Python, JavaScript, HTML5, CSS3, YAML, Java'
+      description: 'Python, JavaScript, TypeScript, Dart, Go'
     },
     {
-      name: 'Frameworks & Tools',
+      name: 'Backend',
       icon: <Terminal size={24} />,
-      description: 'Django, Chart.js, Highcharts, WebSockets, Docker, Git, SQLite'
+      description: 'Django, Django REST Framework, FastAPI, Flask, Node.js, REST APIs, JWT Authentication'
     },
     {
       name: 'Frontend',
       icon: <Layout size={24} />,
-      description: 'Responsive Design, UI/UX, CSS Animations, DOM Manipulation'
+      description: 'React.js, HTML5, CSS3, Tailwind CSS, Vue.js'
     },
     {
-      name: 'Backend',
-      icon: <Database size={24} />,
-      description: 'RESTful APIs, Django Management Commands, Config Automation'
-    },
-    {
-      name: 'Version Control',
-      icon: <GitBranch size={24} />,
-      description: 'Git, GitHub, Collaborative Development'
-    },
-    {
-      name: 'Development Tools',
+      name: 'Mobile & Desktop',
       icon: <Monitor size={24} />,
-      description: 'VS Code, Live Server, PyWebView'
+      description: 'Flutter, PyWebView, Electron.js'
+    },
+    {
+      name: 'Databases',
+      icon: <Database size={24} />,
+      description: 'PostgreSQL, MySQL, SQLite, Firebase, Supabase'
+    },
+    {
+      name: 'Real-Time & Interactive',
+      icon: <Layers size={24} />,
+      description: 'WebSockets, HLS Streaming, Three.js, WebGL'
+    },
+    {
+      name: 'AI & Data',
+      icon: <Cpu size={24} />,
+      description: 'AI Agent Workflows, LLM Orchestration, PyTorch, TensorFlow, Pandas, NumPy'
+    },
+    {
+      name: 'DevOps & Deployment',
+      icon: <GitBranch size={24} />,
+      description: 'Docker, Nginx, Git, GitHub, CI/CD, Vercel, Netlify, Render'
+    },
+    {
+      name: 'Tools',
+      icon: <Wrench size={24} />,
+      description: 'Postman, Figma, Framer, FFmpeg'
     }
   ];
 
@@ -93,7 +108,7 @@ const About: React.FC = () => {
                 {skill.icon}
               </div>
               <h3 className="text-xl font-semibold mb-2">{skill.name}</h3>
-              <p className="text-neutral-600 dark:text-neutral-400">{skill.description}</p>
+              <p className="text-neutral-655 dark:text-neutral-400">{skill.description}</p>
             </motion.div>
           ))}
         </div>

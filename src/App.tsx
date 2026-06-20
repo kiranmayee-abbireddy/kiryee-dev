@@ -2,6 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import Layout from './components/layout/Layout';
 import Hero from './components/sections/Hero';
 import About from './components/sections/About';
+import Experience from './components/sections/Experience';
 import FeaturedProject from './components/sections/FeaturedProject';
 import Projects from './components/sections/Projects';
 import DesktopApps from './components/sections/DesktopApps';
@@ -21,6 +22,7 @@ function App() {
         <Layout>
           <Hero />
           <About />
+          <Experience />
           <FeaturedProject />
           <Projects />
           <Games />

@@ -73,10 +73,13 @@ const Header: React.FC = () => {
     return '#171717';
   };
 
-  const headerClass = `fixed top-0 left-0 right-0 transition-all duration-300 pointer-events-none ${isScrolled && !mobileMenuOpen
-    ? 'py-4 bg-white/90 dark:bg-neutral-900/90 sea:bg-[#f5e6d3]/90 backdrop-blur-sm shadow-sm z-[100]'
-    : mobileMenuOpen ? 'py-6 bg-transparent z-[200]' : 'py-6 bg-transparent z-[100]'
-    }`;
+  const headerClass = `fixed left-1/2 -translate-x-1/2 transition-all duration-500 pointer-events-none z-[100] ${
+    isScrolled && !mobileMenuOpen
+      ? 'top-4 w-[calc(100%-2.5rem)] max-w-7xl py-2.5 px-3 md:px-4 rounded-full bg-white/75 dark:bg-neutral-900/75 sea:bg-[#fdfcf0]/75 backdrop-blur-md border border-neutral-200/30 dark:border-neutral-800/30 sea:border-[#78350f]/10 shadow-lg shadow-neutral-500/5'
+      : mobileMenuOpen 
+        ? 'top-0 w-full py-6 bg-transparent z-[200]' 
+        : 'top-0 w-full py-6 bg-transparent'
+  }`;
 
   const navItems = [
     { label: 'Home', href: '#home', icon: 'Home' },
@@ -105,7 +108,7 @@ const Header: React.FC = () => {
           </motion.a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8 pointer-events-auto">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8 pointer-events-auto pr-6">
             {navItems.map((item, i) => (
               <motion.a
                 key={item.href}
@@ -159,7 +162,7 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Mobile Menu Button - The Center of the Quadrant */}
-          <div className="flex items-center md:hidden gap-1 z-[210] pointer-events-auto">
+          <div className="flex items-center md:hidden gap-1 z-[210] pointer-events-auto pr-6">
             <button
               onClick={() => setTheme(theme === 'sea' ? 'light' : 'sea')}
               className={`p-2 rounded-full transition-colors ${theme === 'sea' ? 'bg-[#78350f] text-white' : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'}`}

@@ -16,6 +16,11 @@ const Certifications: React.FC = () => {
 
   const certifications = [
     {
+      title: 'AI Agents Course (GAIA: 100/100)',
+      issuer: 'Hugging Face',
+      link: 'https://huggingface.co/datasets/agents-course/final-certificates/resolve/main/certificates/kiranmayee-abbireddy/2026-06-19.png'
+    },
+    {
       title: 'Scientific Computing with Python',
       issuer: 'freeCodeCamp',
       link: 'https://freecodecamp.org/certification/fcc93fc1e32-6f7f-4372-bde9-3418d0217080/scientific-computing-with-python-v7'
