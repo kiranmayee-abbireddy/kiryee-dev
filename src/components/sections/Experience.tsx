@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Briefcase, Calendar, Star, Award, ChevronRight, Zap, Target, ArrowRight } from 'lucide-react';
+import { Briefcase, Calendar, Star, Award, ChevronRight, Zap, Target } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 interface JobRole {
@@ -17,8 +17,8 @@ interface JobRole {
 }
 
 const WaveBackground = () => (
-  <div className="absolute inset-0 overflow-hidden bg-[#bae6fd] sea:bg-[#bae6fd] dark:bg-neutral-800 opacity-20 pointer-events-none">
-    <svg className="absolute bottom-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+  <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+    <svg className="absolute bottom-0 w-full h-[60%] min-h-[150px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
       <motion.path
         animate={{
           d: [
@@ -27,8 +27,19 @@ const WaveBackground = () => (
             "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,165.3C672,139,768,117,864,128C960,139,1056,181,1152,197.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ]
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="fill-[#0284c7]/20"
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="fill-[#14b8a6]/20"
+      />
+      <motion.path
+        animate={{
+          d: [
+            "M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+            "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,181.3C672,171,768,181,864,186.7C960,192,1056,192,1152,176C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+            "M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          ]
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="fill-[#0d9488]/20"
       />
     </svg>
   </div>
@@ -38,10 +49,10 @@ const Experience: React.FC = () => {
   const { theme } = useTheme();
   const [ref, inView] = useInView({
     triggerOnce: true,
-    threshold: 0.1,
+    threshold: 0.05,
   });
 
-  const [activeTab, setActiveTab] = useState<number>(0);
+  const [expandedId, setExpandedId] = useState<number | null>(0);
 
   const isSea = theme === 'sea';
 
@@ -61,7 +72,7 @@ const Experience: React.FC = () => {
       ],
       achievements: [
         'Significantly improved release quality, reducing production bugs by a high margin.',
-        'Optimized feature prioritization and balanced team workload to meet critical business demands.'
+        'Optimized feature prioritization and balanced team workload to meet critical demands.'
       ]
     },
     {
@@ -74,7 +85,7 @@ const Experience: React.FC = () => {
       tagline: 'Taking end-to-end ownership of backend API and frontend interfaces.',
       description: [
         'Built full-stack features using React, Django, PostgreSQL, and WebSockets.',
-        'Designed database schemas, developed secure REST APIs, and integrated real-time components.',
+        'Designed scalable database schemas, developed secure REST APIs, and integrated real-time components.',
         'Identified and resolved critical production bugs to maintain high system reliability.'
       ]
     },
@@ -92,6 +103,10 @@ const Experience: React.FC = () => {
       ]
     }
   ];
+
+  const handleCardToggle = (id: number) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
 
   return (
     <section id="experience" className="py-24 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-850">
@@ -120,125 +135,121 @@ const Experience: React.FC = () => {
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            A visual roadmap of my rapid professional progression at <strong className="text-neutral-900 dark:text-white">Protekk Web Technologies LLP</strong>.
+            An interactive breakdown of my rapid progression at <strong className="text-neutral-900 dark:text-white">Protekk Web Technologies LLP</strong>. Click each phase to expand its details.
           </motion.p>
         </div>
 
-        {/* Visual Ascent Roadmap Layout */}
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Left Column: Visual Stepping-Stone Graph - Fills height cleanly */}
-          <div className="md:col-span-5 flex flex-col justify-between gap-4">
-            {roles.slice().reverse().map((job) => {
-              const isActive = activeTab === job.id;
-              return (
-                <motion.button
-                  key={job.id}
-                  onClick={() => setActiveTab(job.id)}
-                  className={`flex-1 w-full flex items-center justify-between gap-4 p-6 rounded-2xl border text-left transition-all ${
-                    isActive
-                      ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 border-transparent shadow-md scale-[1.01]'
-                      : 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white border-neutral-250/80 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800'
-                  }`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                  transition={{ duration: 0.4 }}
+        {/* Expanding Accordion Cards Stack for Mobile & Desktop */}
+        <div className="max-w-4xl mx-auto space-y-6">
+          {roles.map((job) => {
+            const isExpanded = expandedId === job.id;
+            return (
+              <motion.div
+                layout
+                key={job.id}
+                className={`rounded-2xl border transition-all duration-300 relative overflow-hidden flex flex-col ${
+                  isExpanded
+                    ? 'bg-neutral-50 dark:bg-neutral-800 border-neutral-300 dark:border-neutral-700 shadow-md'
+                    : 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 hover:shadow-sm'
+                }`}
+                initial={{ opacity: 0, y: 15 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                transition={{ duration: 0.4 }}
+              >
+                {/* Beach wave decoration in expanded state */}
+                {isExpanded && isSea && <WaveBackground />}
+
+                {/* Accordion Toggle Header */}
+                <button
+                  onClick={() => handleCardToggle(job.id)}
+                  className="w-full flex items-center justify-between p-6 md:p-8 text-left relative z-10"
                 >
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className={`p-2.5 rounded-xl shrink-0 ${
-                      isActive ? 'bg-white/10 dark:bg-neutral-900/10' : 'bg-neutral-100 dark:bg-neutral-850'
+                  <div className="flex items-center gap-4 md:gap-6 min-w-0">
+                    {/* Circle icon with theme consistency */}
+                    <div className={`p-3 rounded-full shrink-0 transition-colors duration-300 ${
+                      isExpanded 
+                        ? 'filter-button-active bg-neutral-900 dark:bg-white text-white dark:text-neutral-900' 
+                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white'
                     }`}>
                       {job.icon}
                     </div>
+
                     <div className="min-w-0">
-                      <span className={`text-[10px] font-bold uppercase tracking-wider block ${
-                        isActive ? 'text-neutral-300 dark:text-neutral-500' : 'text-neutral-450 dark:text-neutral-500'
-                      }`}>
-                        {job.timeframe}
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-450 dark:text-neutral-500 block">
+                        {job.timeframe} • {job.phase}
                       </span>
-                      <h3 className="font-bold text-base truncate">
+                      <h3 className="font-bold text-lg md:text-xl text-neutral-900 dark:text-white">
                         {job.role}
                       </h3>
                     </div>
                   </div>
-                  <ChevronRight size={16} className={`shrink-0 transition-transform ${isActive ? 'rotate-90 text-white dark:text-neutral-900' : 'text-neutral-400'}`} />
-                </motion.button>
-              );
-            })}
-          </div>
 
-          {/* Right Column: Dynamic Deep-Dive Story Card */}
-          <div className="md:col-span-7 relative min-h-[420px] flex">
-            <AnimatePresence mode="wait">
-              {roles.map((job) => {
-                if (job.id !== activeTab) return null;
-                return (
-                  <motion.div
-                    key={job.id}
-                    className="w-full bg-white dark:bg-neutral-900 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-sm flex flex-col justify-between relative overflow-hidden"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    {/* Background Waves (Optional/Theme based) */}
-                    {isSea && <WaveBackground />}
+                  <div className="flex items-center gap-4 shrink-0">
+                    <span className="hidden md:inline-block text-xs font-semibold text-neutral-450 dark:text-neutral-500">
+                      {job.duration}
+                    </span>
+                    <ChevronRight 
+                      size={20} 
+                      className={`text-neutral-400 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`} 
+                    />
+                  </div>
+                </button>
 
-                    <div className="relative z-10">
-                      {/* Top bar info */}
-                      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-100 dark:border-neutral-800 pb-5 mb-5">
-                        <div>
-                          <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-450 dark:text-neutral-550 block">
-                            {job.phase}
-                          </span>
-                          <h3 className="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white mt-1">
-                            {job.role}
-                          </h3>
+                {/* Collapsible Details Body */}
+                <AnimatePresence initial={false}>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      className="overflow-hidden relative z-10 border-t border-neutral-200/50 dark:border-neutral-700/50"
+                    >
+                      <div className="p-6 md:p-8 bg-neutral-50/50 dark:bg-neutral-800/50">
+                        {/* Mobile display duration */}
+                        <div className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-neutral-500 dark:text-neutral-450 mb-4">
+                          <Calendar size={12} /> {job.duration}
                         </div>
-                        <div className="flex items-center gap-1 text-xs font-semibold text-neutral-500 dark:text-neutral-450">
-                          <Calendar size={14} /> {job.duration}
-                        </div>
-                      </div>
 
-                      {/* Tagline */}
-                      <p className="text-sm font-semibold text-neutral-750 dark:text-neutral-200 mb-5 flex items-start gap-2 leading-relaxed">
-                        <Target size={16} className="text-neutral-900 dark:text-white shrink-0 mt-0.5" />
-                        <span>{job.tagline}</span>
-                      </p>
+                        {/* Tagline */}
+                        <p className="text-sm md:text-base font-semibold text-neutral-750 dark:text-neutral-200 mb-5 flex items-start gap-2.5 leading-relaxed">
+                          <Target size={16} className="text-neutral-900 dark:text-white shrink-0 mt-1" />
+                          <span>{job.tagline}</span>
+                        </p>
 
-                      {/* Main bullet items */}
-                      <ul className="space-y-3 mb-6">
-                        {job.description.map((item, idx) => (
-                          <li key={idx} className="text-sm text-neutral-600 dark:text-neutral-400 flex items-start gap-2.5 leading-relaxed">
-                            <ArrowRight size={14} className="text-neutral-400 mt-1 shrink-0" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Milestone Highlights */}
-                    {job.achievements && (
-                      <div className="mt-6 pt-5 border-t border-neutral-100 dark:border-neutral-800 relative z-10">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-450 dark:text-neutral-500 mb-3 flex items-center gap-1">
-                          <Star size={12} /> Key Achievements
-                        </h4>
-                        <ul className="space-y-2">
-                          {job.achievements.map((ach, idx) => (
-                            <li key={idx} className="text-xs font-semibold text-neutral-800 dark:text-neutral-250 flex items-start gap-2.5">
-                              <span className="text-neutral-900 dark:text-white">•</span>
-                              <span>{ach}</span>
+                        {/* Description lists */}
+                        <ul className="space-y-3 mb-6">
+                          {job.description.map((item, idx) => (
+                            <li key={idx} className="text-sm text-neutral-600 dark:text-neutral-400 flex items-start gap-2.5 leading-relaxed">
+                              <span className="w-1.5 h-1.5 bg-neutral-400 dark:bg-neutral-500 rounded-full mt-2 flex-shrink-0" />
+                              <span>{item}</span>
                             </li>
                           ))}
                         </ul>
-                      </div>
-                    )}
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </div>
 
+                        {/* Achievements */}
+                        {job.achievements && (
+                          <div className="pt-5 border-t border-neutral-200/50 dark:border-neutral-700/50">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-450 dark:text-neutral-500 mb-3 flex items-center gap-1.5">
+                              <Star size={12} /> Key Accomplishments
+                            </h4>
+                            <ul className="space-y-2">
+                              {job.achievements.map((ach, idx) => (
+                                <li key={idx} className="text-xs md:text-sm font-semibold text-neutral-800 dark:text-neutral-250 flex items-start gap-2 leading-relaxed">
+                                  <span className="text-neutral-900 dark:text-white font-bold">•</span>
+                                  <span>{ach}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
