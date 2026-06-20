@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Briefcase, Calendar, Star, Award, ChevronRight, Zap, Target } from 'lucide-react';
+import { Briefcase, Calendar, Star, Award, ChevronRight, Zap, Target, ArrowRight } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 interface JobRole {
@@ -17,8 +17,8 @@ interface JobRole {
 }
 
 const WaveBackground = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-    <svg className="absolute bottom-0 w-full h-[60%] min-h-[150px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+  <div className="absolute inset-0 overflow-hidden bg-[#bae6fd] sea:bg-[#bae6fd] dark:bg-neutral-800">
+    <svg className="absolute bottom-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
       <motion.path
         animate={{
           d: [
@@ -27,8 +27,8 @@ const WaveBackground = () => (
             "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,165.3C672,139,768,117,864,128C960,139,1056,181,1152,197.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ]
         }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="fill-[#14b8a6]/20"
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="fill-[#0284c7]/30"
       />
       <motion.path
         animate={{
@@ -38,8 +38,19 @@ const WaveBackground = () => (
             "M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ]
         }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        className="fill-[#0d9488]/20"
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        className="fill-[#14b8a6]/40"
+      />
+      <motion.path
+        animate={{
+          d: [
+            "M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,240C1248,235,1344,245,1392,250.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+            "M0,256L48,245.3C96,235,192,213,288,218.7C384,224,480,256,576,250.7C672,245,768,203,864,181.3C960,160,1056,160,1152,181.3C1248,203,1344,245,1392,266.7L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+            "M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,240C1248,235,1344,245,1392,250.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          ]
+        }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        className="fill-[#0d9488]/50"
       />
     </svg>
   </div>
@@ -175,22 +186,28 @@ const Experience: React.FC = () => {
                     </div>
 
                     <div className="min-w-0">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-450 dark:text-neutral-500 block">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-450 dark:text-neutral-550 block">
                         {job.timeframe} • {job.phase}
                       </span>
-                      <h3 className="font-bold text-lg md:text-xl text-neutral-900 dark:text-white">
+                      <h3 className={`font-bold text-lg md:text-xl transition-colors ${
+                        isExpanded && isSea ? 'text-white' : 'text-neutral-900 dark:text-white'
+                      }`}>
                         {job.role}
                       </h3>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-4 shrink-0">
-                    <span className="hidden md:inline-block text-xs font-semibold text-neutral-450 dark:text-neutral-500">
+                    <span className={`hidden md:inline-block text-xs font-semibold ${
+                      isExpanded && isSea ? 'text-neutral-200' : 'text-neutral-450 dark:text-neutral-550'
+                    }`}>
                       {job.duration}
                     </span>
                     <ChevronRight 
                       size={20} 
-                      className={`text-neutral-400 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`} 
+                      className={`transition-all duration-300 ${
+                        isExpanded ? 'rotate-95' : ''
+                      } ${isExpanded && isSea ? 'text-white' : 'text-neutral-400'}`} 
                     />
                   </div>
                 </button>
@@ -205,23 +222,33 @@ const Experience: React.FC = () => {
                       transition={{ duration: 0.3, ease: 'easeInOut' }}
                       className="overflow-hidden relative z-10 border-t border-neutral-200/50 dark:border-neutral-700/50"
                     >
-                      <div className="p-6 md:p-8 bg-neutral-50/50 dark:bg-neutral-800/50">
+                      <div className={`p-6 md:p-8 ${
+                        isSea ? 'bg-transparent' : 'bg-neutral-50/50 dark:bg-neutral-800/50'
+                      }`}>
                         {/* Mobile display duration */}
-                        <div className="md:hidden flex items-center gap-1.5 text-xs font-semibold text-neutral-500 dark:text-neutral-450 mb-4">
+                        <div className={`md:hidden flex items-center gap-1.5 text-xs font-semibold mb-4 ${
+                          isSea ? 'text-white/80' : 'text-neutral-500 dark:text-neutral-450'
+                        }`}>
                           <Calendar size={12} /> {job.duration}
                         </div>
 
                         {/* Tagline */}
-                        <p className="text-sm md:text-base font-semibold text-neutral-750 dark:text-neutral-200 mb-5 flex items-start gap-2.5 leading-relaxed">
-                          <Target size={16} className="text-neutral-900 dark:text-white shrink-0 mt-1" />
+                        <p className={`text-sm md:text-base font-semibold mb-5 flex items-start gap-2.5 leading-relaxed ${
+                          isSea ? 'text-white' : 'text-neutral-750 dark:text-neutral-200'
+                        }`}>
+                          <Target size={16} className={`shrink-0 mt-1 ${isSea ? 'text-white' : 'text-neutral-900 dark:text-white'}`} />
                           <span>{job.tagline}</span>
                         </p>
 
                         {/* Description lists */}
                         <ul className="space-y-3 mb-6">
                           {job.description.map((item, idx) => (
-                            <li key={idx} className="text-sm text-neutral-600 dark:text-neutral-400 flex items-start gap-2.5 leading-relaxed">
-                              <span className="w-1.5 h-1.5 bg-neutral-400 dark:bg-neutral-500 rounded-full mt-2 flex-shrink-0" />
+                            <li key={idx} className={`text-sm flex items-start gap-2.5 leading-relaxed ${
+                              isSea ? 'text-white/90' : 'text-neutral-650 dark:text-neutral-400'
+                            }`}>
+                              <span className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${
+                                isSea ? 'bg-white/60' : 'bg-neutral-400 dark:bg-neutral-500'
+                              }`} />
                               <span>{item}</span>
                             </li>
                           ))}
@@ -229,14 +256,20 @@ const Experience: React.FC = () => {
 
                         {/* Achievements */}
                         {job.achievements && (
-                          <div className="pt-5 border-t border-neutral-200/50 dark:border-neutral-700/50">
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-450 dark:text-neutral-500 mb-3 flex items-center gap-1.5">
+                          <div className={`pt-5 border-t ${
+                            isSea ? 'border-white/20' : 'border-neutral-200/50 dark:border-neutral-700/50'
+                          }`}>
+                            <h4 className={`text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5 ${
+                              isSea ? 'text-white/70' : 'text-neutral-450 dark:text-neutral-550'
+                            }`}>
                               <Star size={12} /> Key Accomplishments
                             </h4>
                             <ul className="space-y-2">
                               {job.achievements.map((ach, idx) => (
-                                <li key={idx} className="text-xs md:text-sm font-semibold text-neutral-800 dark:text-neutral-250 flex items-start gap-2 leading-relaxed">
-                                  <span className="text-neutral-900 dark:text-white font-bold">•</span>
+                                <li key={idx} className={`text-xs md:text-sm font-semibold flex items-start gap-2 leading-relaxed ${
+                                  isSea ? 'text-white' : 'text-neutral-808 dark:text-neutral-255'
+                                }`}>
+                                  <span className={`font-bold ${isSea ? 'text-white' : 'text-neutral-900 dark:text-white'}`}>•</span>
                                   <span>{ach}</span>
                                 </li>
                               ))}
