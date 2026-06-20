@@ -75,7 +75,7 @@ const Header: React.FC = () => {
 
   const headerClass = `fixed left-1/2 -translate-x-1/2 transition-all duration-500 pointer-events-none z-[100] ${
     isScrolled && !mobileMenuOpen
-      ? 'top-4 w-[calc(100%-2.5rem)] max-w-5xl py-2.5 px-3 md:px-4 rounded-full bg-white/75 dark:bg-neutral-900/75 sea:bg-[#fdfcf0]/75 backdrop-blur-md border border-neutral-200/30 dark:border-neutral-800/30 sea:border-[#78350f]/10 shadow-lg shadow-neutral-500/5'
+      ? 'top-4 w-[calc(100%-2.5rem)] max-w-7xl py-2.5 px-3 md:px-4 rounded-full bg-white/75 dark:bg-neutral-900/75 sea:bg-[#fdfcf0]/75 backdrop-blur-md border border-neutral-200/30 dark:border-neutral-800/30 sea:border-[#78350f]/10 shadow-lg shadow-neutral-500/5'
       : mobileMenuOpen 
         ? 'top-0 w-full py-6 bg-transparent z-[200]' 
         : 'top-0 w-full py-6 bg-transparent'
