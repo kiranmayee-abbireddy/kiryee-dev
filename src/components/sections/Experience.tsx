@@ -17,7 +17,6 @@ interface JobRole {
 }
 
 const WaveBackground: React.FC<{ isSea: boolean; isDark: boolean }> = ({ isSea, isDark }) => {
-  // Determine fills based on active theme matching hero waves color
   const fill1 = isSea ? 'fill-[#0284c7]/30' : isDark ? 'fill-white/[0.12]' : 'fill-black/[0.12]';
   const fill2 = isSea ? 'fill-[#14b8a6]/40' : isDark ? 'fill-white/[0.08]' : 'fill-black/[0.08]';
   const fill3 = isSea ? 'fill-[#0d9488]/50' : isDark ? 'fill-white/[0.04]' : 'fill-black/[0.04]';
@@ -129,7 +128,6 @@ const Experience: React.FC = () => {
     setExpandedId(expandedId === id ? null : id);
   };
 
-  // Text color mapping based on theme for readability and alignment
   const getHeadingColor = (isExpanded: boolean) => {
     if (isExpanded) {
       if (isSea) return 'text-[#78350f]';
@@ -145,13 +143,27 @@ const Experience: React.FC = () => {
       if (isDark) return 'text-neutral-400';
       return 'text-neutral-500';
     }
-    return 'text-neutral-450 dark:text-neutral-550';
+    return 'text-neutral-455 dark:text-neutral-550';
   };
 
   const getBodyTextColor = () => {
     if (isSea) return 'text-[#451a03]';
     if (isDark) return 'text-neutral-300';
     return 'text-neutral-700';
+  };
+
+  // Custom styling for the icon container to bypass global .p-3.rounded-full overrides in Sea theme
+  const getIconWrapperClass = (isExpanded: boolean) => {
+    const base = "p-[11px] rounded-full shrink-0 transition-colors duration-300 flex items-center justify-center";
+    if (isExpanded) {
+      if (isSea) return `${base} bg-[#78350f] text-white`;
+      if (isDark) return `${base} bg-white text-neutral-900`;
+      return `${base} bg-neutral-900 text-white`;
+    } else {
+      if (isSea) return `${base} bg-[#fdfcf0] text-[#78350f] border border-[#e7d8c0]`;
+      if (isDark) return `${base} bg-neutral-800 text-white`;
+      return `${base} bg-neutral-100 text-neutral-900`;
+    }
   };
 
   return (
@@ -176,7 +188,7 @@ const Experience: React.FC = () => {
             From Intern to Lead Developer
           </motion.h2>
           <motion.p
-            className="text-lg text-neutral-700 dark:text-neutral-305 max-w-3xl mx-auto"
+            className="text-lg text-neutral-700 dark:text-neutral-350 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -208,15 +220,11 @@ const Experience: React.FC = () => {
                 {/* Accordion Toggle Header */}
                 <button
                   onClick={() => handleCardToggle(job.id)}
-                  className="w-full flex items-center justify-between p-6 md:p-8 text-left relative z-10 animate-fade-in"
+                  className="w-full flex items-center justify-between p-6 md:p-8 text-left relative z-10"
                 >
                   <div className="flex items-center gap-4 md:gap-6 min-w-0">
                     {/* Circle icon with theme consistency */}
-                    <div className={`p-3 rounded-full shrink-0 transition-colors duration-300 ${
-                      isExpanded 
-                        ? 'filter-button-active bg-neutral-900 dark:bg-white text-white dark:text-neutral-900' 
-                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white'
-                    }`}>
+                    <div className={getIconWrapperClass(isExpanded)}>
                       {job.icon}
                     </div>
 
