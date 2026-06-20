@@ -35,8 +35,12 @@ const ScrollIndicator: React.FC = () => {
     if (!track) return;
 
     const rect = track.getBoundingClientRect();
-    const relativeY = clientY - rect.top;
-    const progress = Math.max(0, Math.min(1, relativeY / rect.height));
+    const startY = rect.top + 28; // Align with the top anchor
+    const endY = rect.bottom - 40; // Align with track limits
+    const trackHeight = endY - startY;
+
+    const relativeY = clientY - startY;
+    const progress = Math.max(0, Math.min(1, relativeY / trackHeight));
 
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     window.scrollTo(0, progress * docHeight);
@@ -86,42 +90,55 @@ const ScrollIndicator: React.FC = () => {
     };
   }, [isDragging]);
 
-  // Determine colors based on active theme
-  const getFishColor = () => {
-    if (isSea) return '#78350f'; // Beach theme accent
+  // Theme-compliant colors
+  const getThemeColor = () => {
+    if (isSea) return '#78350f'; // Wet sand brown
     if (isDark) return '#ffffff'; // White for Dark Mode
     return '#000000'; // Black for Light Mode
   };
 
-  const getTrackColor = () => {
-    if (isSea) return 'rgba(120, 53, 15, 0.15)';
-    if (isDark) return 'rgba(255, 255, 255, 0.1)';
-    return 'rgba(0, 0, 0, 0.1)';
+  const getThreadColor = () => {
+    if (isSea) return 'rgba(120, 53, 15, 0.25)';
+    if (isDark) return 'rgba(255, 255, 255, 0.2)';
+    return 'rgba(0, 0, 0, 0.2)';
   };
+
+  const startOffset = 28; // Starts aligned with navbar icons
 
   return (
     <div 
       ref={trackRef}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
-      className="fixed right-0 top-0 w-8 h-screen z-[9999] cursor-ns-resize flex items-center justify-center select-none"
+      className="fixed right-3 top-0 w-6 h-screen z-[9999] cursor-ns-resize flex flex-col items-center select-none"
       style={{ touchAction: 'none' }}
     >
-      {/* Scrollbar Track line */}
+      {/* Top Navbar Anchor (Small ring aligning with header icons) */}
       <div 
-        className="w-[2px] h-[95vh] rounded-full transition-colors duration-300"
-        style={{ backgroundColor: getTrackColor() }}
+        className="w-2 h-2 rounded-full border-2 transition-colors duration-300 mb-0.5"
+        style={{ 
+          borderColor: getThemeColor(),
+          marginTop: `${startOffset}px`
+        }}
+      />
+
+      {/* Fishing Thread (Solid ultra-thin 1px line connecting top anchor to the fish) */}
+      <div 
+        className="w-[1px] transition-all duration-75 pointer-events-none"
+        style={{ 
+          backgroundColor: getThreadColor(),
+          height: `calc(${scrollProgress * 0.9}% + 8px)`
+        }}
       />
 
       {/* Draggable Fish Thumb */}
       <motion.div
         className="absolute w-12 h-16 flex items-center justify-center pointer-events-none"
         style={{
-          top: `${scrollProgress * 0.9}vh`, // Keeps fish within track constraints
-          y: '2.5vh', // Offsets top/bottom margins
+          top: `calc(${scrollProgress * 0.9}% + ${startOffset}px)`,
         }}
       >
-        {/* Cute Vector Fish looking down & wiggling on drag */}
+        {/* Vector Fish rotated 90deg to swim down the line */}
         <motion.div
           animate={isDragging ? {
             rotate: [90, 85, 95, 90],
@@ -135,27 +152,27 @@ const ScrollIndicator: React.FC = () => {
           }}
           className="flex items-center justify-center"
         >
-          <svg width="40" height="24" viewBox="-20 -12 40 24">
+          <svg width="36" height="20" viewBox="-18 -10 36 20">
             {/* Wiggling tail */}
             <motion.path 
-              d="M -10 0 L -18 -6 L -18 6 Z" 
-              fill={getFishColor()}
+              d="M -9 0 L -16 -5 L -16 5 Z" 
+              fill={getThemeColor()}
               animate={isDragging ? {
-                rotateY: [0, 45, 0, -45, 0],
+                rotateY: [0, 40, 0, -40, 0],
               } : {}}
               transition={{
                 repeat: Infinity,
                 duration: 0.3,
                 ease: "easeInOut"
               }}
-              style={{ transformOrigin: '-10px 0px' }}
+              style={{ transformOrigin: '-9px 0px' }}
             />
             {/* Main fish body */}
-            <ellipse cx="2" cy="0" rx="12" ry="7" fill={getFishColor()} />
+            <ellipse cx="2" cy="0" rx="11" ry="6" fill={getThemeColor()} />
             {/* Eye */}
-            <circle cx="8" cy="-2.5" r="1.5" fill={isDark ? '#000' : '#fff'} />
+            <circle cx="8" cy="-2" r="1.2" fill={isDark ? '#000' : '#fff'} />
             {/* Fin */}
-            <path d="M 0 5 L -4 10 L 2 7 Z" fill={getFishColor()} />
+            <path d="M 0 4 L -3 8 L 1 5 Z" fill={getThemeColor()} />
           </svg>
         </motion.div>
       </motion.div>

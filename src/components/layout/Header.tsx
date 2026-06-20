@@ -105,7 +105,7 @@ const Header: React.FC = () => {
           </motion.a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8 pointer-events-auto">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8 pointer-events-auto pr-6">
             {navItems.map((item, i) => (
               <motion.a
                 key={item.href}
@@ -159,7 +159,7 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Mobile Menu Button - The Center of the Quadrant */}
-          <div className="flex items-center md:hidden gap-1 z-[210] pointer-events-auto">
+          <div className="flex items-center md:hidden gap-1 z-[210] pointer-events-auto pr-6">
             <button
               onClick={() => setTheme(theme === 'sea' ? 'light' : 'sea')}
               className={`p-2 rounded-full transition-colors ${theme === 'sea' ? 'bg-[#78350f] text-white' : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'}`}
