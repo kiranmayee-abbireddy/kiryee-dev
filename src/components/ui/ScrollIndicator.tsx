@@ -13,6 +13,7 @@ const ScrollIndicator: React.FC = () => {
 
   // Calculate scroll progress percentage
   const handleScroll = () => {
+    if (isDragging) return; // Let dragging handle state updates
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     if (docHeight <= 0) {
@@ -27,7 +28,7 @@ const ScrollIndicator: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isDragging]);
 
   // Handle Drag logic
   const handleDrag = (clientY: number) => {
@@ -41,6 +42,9 @@ const ScrollIndicator: React.FC = () => {
 
     const relativeY = clientY - startY;
     const progress = Math.max(0, Math.min(1, relativeY / trackHeight));
+
+    // Instantly update local progress state to match cursor Y position for zero-latency dragging
+    setScrollProgress(progress * 100);
 
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     window.scrollTo(0, progress * docHeight);
@@ -124,7 +128,9 @@ const ScrollIndicator: React.FC = () => {
 
       {/* Fishing Thread (Solid ultra-thin 1px line connecting top anchor to the fish) */}
       <div 
-        className="w-[1px] transition-all duration-75 pointer-events-none"
+        className={`w-[1px] pointer-events-none ${
+          isDragging ? '' : 'transition-all duration-300 ease-out'
+        }`}
         style={{ 
           backgroundColor: getThreadColor(),
           height: `calc(${scrollProgress * 0.9}% + 8px)`
@@ -133,7 +139,9 @@ const ScrollIndicator: React.FC = () => {
 
       {/* Draggable Fish Thumb */}
       <motion.div
-        className="absolute w-12 h-16 flex items-center justify-center pointer-events-none"
+        className={`absolute w-12 h-16 flex items-center justify-center pointer-events-none ${
+          isDragging ? '' : 'transition-all duration-300 ease-out'
+        }`}
         style={{
           top: `calc(${scrollProgress * 0.9}% + ${startOffset}px)`,
         }}
