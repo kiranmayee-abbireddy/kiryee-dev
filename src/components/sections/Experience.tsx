@@ -16,45 +16,54 @@ interface JobRole {
   achievements?: string[];
 }
 
-const WaveBackground = () => (
-  <div className="absolute inset-0 overflow-hidden bg-[#bae6fd] sea:bg-[#bae6fd] dark:bg-neutral-800">
-    <svg className="absolute bottom-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
-      <motion.path
-        animate={{
-          d: [
-            "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,165.3C672,139,768,117,864,128C960,139,1056,181,1152,197.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
-            "M0,192L48,202.7C96,213,192,235,288,229.3C384,224,480,192,576,170.7C672,149,768,139,864,154.7C960,171,1056,213,1152,213C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
-            "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,165.3C672,139,768,117,864,128C960,139,1056,181,1152,197.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          ]
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="fill-[#0284c7]/30"
-      />
-      <motion.path
-        animate={{
-          d: [
-            "M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
-            "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,181.3C672,171,768,181,864,186.7C960,192,1056,192,1152,176C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
-            "M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          ]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="fill-[#14b8a6]/40"
-      />
-      <motion.path
-        animate={{
-          d: [
-            "M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,240C1248,235,1344,245,1392,250.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
-            "M0,256L48,245.3C96,235,192,213,288,218.7C384,224,480,256,576,250.7C672,245,768,203,864,181.3C960,160,1056,160,1152,181.3C1248,203,1344,245,1392,266.7L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
-            "M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,240C1248,235,1344,245,1392,250.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          ]
-        }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="fill-[#0d9488]/50"
-      />
-    </svg>
-  </div>
-);
+const WaveBackground: React.FC<{ isSea: boolean; isDark: boolean }> = ({ isSea, isDark }) => {
+  // Determine fills based on active theme matching hero waves color
+  const fill1 = isSea ? 'fill-[#0284c7]/30' : isDark ? 'fill-white/[0.12]' : 'fill-black/[0.12]';
+  const fill2 = isSea ? 'fill-[#14b8a6]/40' : isDark ? 'fill-white/[0.08]' : 'fill-black/[0.08]';
+  const fill3 = isSea ? 'fill-[#0d9488]/50' : isDark ? 'fill-white/[0.04]' : 'fill-black/[0.04]';
+
+  return (
+    <div className={`absolute inset-0 overflow-hidden ${
+      isSea ? 'bg-[#bae6fd]' : 'bg-transparent'
+    }`}>
+      <svg className="absolute bottom-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <motion.path
+          animate={{
+            d: [
+              "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,165.3C672,139,768,117,864,128C960,139,1056,181,1152,197.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              "M0,192L48,202.7C96,213,192,235,288,229.3C384,224,480,192,576,170.7C672,149,768,139,864,154.7C960,171,1056,213,1152,213C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,165.3C672,139,768,117,864,128C960,139,1056,181,1152,197.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            ]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className={fill1}
+        />
+        <motion.path
+          animate={{
+            d: [
+              "M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              "M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,181.3C672,171,768,181,864,186.7C960,192,1056,192,1152,176C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              "M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            ]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className={fill2}
+        />
+        <motion.path
+          animate={{
+            d: [
+              "M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,240C1248,235,1344,245,1392,250.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              "M0,256L48,245.3C96,235,192,213,288,218.7C384,224,480,256,576,250.7C672,245,768,203,864,181.3C960,160,1056,160,1152,181.3C1248,203,1344,245,1392,266.7L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              "M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,240C1248,235,1344,245,1392,250.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            ]
+          }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className={fill3}
+        />
+      </svg>
+    </div>
+  );
+};
 
 const Experience: React.FC = () => {
   const { theme } = useTheme();
@@ -66,6 +75,7 @@ const Experience: React.FC = () => {
   const [expandedId, setExpandedId] = useState<number | null>(0);
 
   const isSea = theme === 'sea';
+  const isDark = theme === 'dark';
 
   const roles: JobRole[] = [
     {
@@ -119,6 +129,31 @@ const Experience: React.FC = () => {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  // Text color mapping based on theme for readability and alignment
+  const getHeadingColor = (isExpanded: boolean) => {
+    if (isExpanded) {
+      if (isSea) return 'text-[#78350f]';
+      if (isDark) return 'text-white';
+      return 'text-neutral-900';
+    }
+    return 'text-neutral-900 dark:text-white';
+  };
+
+  const getSubHeadingColor = (isExpanded: boolean) => {
+    if (isExpanded) {
+      if (isSea) return 'text-[#451a03]/80';
+      if (isDark) return 'text-neutral-400';
+      return 'text-neutral-500';
+    }
+    return 'text-neutral-450 dark:text-neutral-550';
+  };
+
+  const getBodyTextColor = () => {
+    if (isSea) return 'text-[#451a03]';
+    if (isDark) return 'text-neutral-300';
+    return 'text-neutral-700';
+  };
+
   return (
     <section id="experience" className="py-24 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-850">
       <div className="container mx-auto px-6" ref={ref}>
@@ -167,13 +202,13 @@ const Experience: React.FC = () => {
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                 transition={{ duration: 0.4 }}
               >
-                {/* Beach wave decoration in expanded state */}
-                {isExpanded && isSea && <WaveBackground />}
+                {/* Wave Decoration active in expanded state across all themes */}
+                {isExpanded && <WaveBackground isSea={isSea} isDark={isDark} />}
 
                 {/* Accordion Toggle Header */}
                 <button
                   onClick={() => handleCardToggle(job.id)}
-                  className="w-full flex items-center justify-between p-6 md:p-8 text-left relative z-10"
+                  className="w-full flex items-center justify-between p-6 md:p-8 text-left relative z-10 animate-fade-in"
                 >
                   <div className="flex items-center gap-4 md:gap-6 min-w-0">
                     {/* Circle icon with theme consistency */}
@@ -186,28 +221,24 @@ const Experience: React.FC = () => {
                     </div>
 
                     <div className="min-w-0">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-450 dark:text-neutral-550 block">
+                      <span className={`text-[10px] font-bold uppercase tracking-wider block transition-colors duration-300 ${getSubHeadingColor(isExpanded)}`}>
                         {job.timeframe} • {job.phase}
                       </span>
-                      <h3 className={`font-bold text-lg md:text-xl transition-colors ${
-                        isExpanded && isSea ? 'text-white' : 'text-neutral-900 dark:text-white'
-                      }`}>
+                      <h3 className={`font-bold text-lg md:text-xl transition-colors duration-300 ${getHeadingColor(isExpanded)}`}>
                         {job.role}
                       </h3>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-4 shrink-0">
-                    <span className={`hidden md:inline-block text-xs font-semibold ${
-                      isExpanded && isSea ? 'text-neutral-200' : 'text-neutral-450 dark:text-neutral-550'
-                    }`}>
+                    <span className={`hidden md:inline-block text-xs font-semibold transition-colors duration-300 ${getSubHeadingColor(isExpanded)}`}>
                       {job.duration}
                     </span>
                     <ChevronRight 
                       size={20} 
                       className={`transition-all duration-300 ${
                         isExpanded ? 'rotate-95' : ''
-                      } ${isExpanded && isSea ? 'text-white' : 'text-neutral-400'}`} 
+                      } ${isExpanded && isSea ? 'text-[#78350f]' : 'text-neutral-400'}`} 
                     />
                   </div>
                 </button>
@@ -222,32 +253,24 @@ const Experience: React.FC = () => {
                       transition={{ duration: 0.3, ease: 'easeInOut' }}
                       className="overflow-hidden relative z-10 border-t border-neutral-200/50 dark:border-neutral-700/50"
                     >
-                      <div className={`p-6 md:p-8 ${
-                        isSea ? 'bg-transparent' : 'bg-neutral-50/50 dark:bg-neutral-800/50'
-                      }`}>
+                      <div className="p-6 md:p-8 bg-transparent">
                         {/* Mobile display duration */}
-                        <div className={`md:hidden flex items-center gap-1.5 text-xs font-semibold mb-4 ${
-                          isSea ? 'text-white/80' : 'text-neutral-500 dark:text-neutral-450'
-                        }`}>
+                        <div className={`md:hidden flex items-center gap-1.5 text-xs font-semibold mb-4 ${getSubHeadingColor(isExpanded)}`}>
                           <Calendar size={12} /> {job.duration}
                         </div>
 
                         {/* Tagline */}
-                        <p className={`text-sm md:text-base font-semibold mb-5 flex items-start gap-2.5 leading-relaxed ${
-                          isSea ? 'text-white' : 'text-neutral-750 dark:text-neutral-200'
-                        }`}>
-                          <Target size={16} className={`shrink-0 mt-1 ${isSea ? 'text-white' : 'text-neutral-900 dark:text-white'}`} />
+                        <p className={`text-sm md:text-base font-semibold mb-5 flex items-start gap-2.5 leading-relaxed ${getHeadingColor(isExpanded)}`}>
+                          <Target size={16} className={`shrink-0 mt-1 ${isSea ? 'text-[#78350f]' : 'text-neutral-900 dark:text-white'}`} />
                           <span>{job.tagline}</span>
                         </p>
 
                         {/* Description lists */}
                         <ul className="space-y-3 mb-6">
                           {job.description.map((item, idx) => (
-                            <li key={idx} className={`text-sm flex items-start gap-2.5 leading-relaxed ${
-                              isSea ? 'text-white/90' : 'text-neutral-650 dark:text-neutral-400'
-                            }`}>
+                            <li key={idx} className={`text-sm flex items-start gap-2.5 leading-relaxed ${getBodyTextColor()}`}>
                               <span className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${
-                                isSea ? 'bg-white/60' : 'bg-neutral-400 dark:bg-neutral-500'
+                                isSea ? 'bg-[#78350f]/60' : 'bg-neutral-400 dark:bg-neutral-500'
                               }`} />
                               <span>{item}</span>
                             </li>
@@ -257,19 +280,15 @@ const Experience: React.FC = () => {
                         {/* Achievements */}
                         {job.achievements && (
                           <div className={`pt-5 border-t ${
-                            isSea ? 'border-white/20' : 'border-neutral-200/50 dark:border-neutral-700/50'
+                            isSea ? 'border-[#78350f]/20' : 'border-neutral-200/50 dark:border-neutral-700/50'
                           }`}>
-                            <h4 className={`text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5 ${
-                              isSea ? 'text-white/70' : 'text-neutral-450 dark:text-neutral-550'
-                            }`}>
+                            <h4 className={`text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5 ${getSubHeadingColor(isExpanded)}`}>
                               <Star size={12} /> Key Accomplishments
                             </h4>
                             <ul className="space-y-2">
                               {job.achievements.map((ach, idx) => (
-                                <li key={idx} className={`text-xs md:text-sm font-semibold flex items-start gap-2 leading-relaxed ${
-                                  isSea ? 'text-white' : 'text-neutral-808 dark:text-neutral-255'
-                                }`}>
-                                  <span className={`font-bold ${isSea ? 'text-white' : 'text-neutral-900 dark:text-white'}`}>•</span>
+                                <li key={idx} className={`text-xs md:text-sm font-semibold flex items-start gap-2 leading-relaxed ${getBodyTextColor()}`}>
+                                  <span className={`font-bold ${isSea ? 'text-[#78350f]' : 'text-neutral-900 dark:text-white'}`}>•</span>
                                   <span>{ach}</span>
                                 </li>
                               ))}
