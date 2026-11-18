@@ -67,11 +67,12 @@ const DesktopApps: React.FC = () => {
     },
     {
       id: 6,
-      title: 'Clean Sweep',
-      description: 'A powerful, modern desktop application designed for granular system optimization. It provides developers and power users with total control over file cleanup and organization through a sleek, premium interface.',
-      link: '/CleanSweep.exe',
+      title: 'CleanSweep',
+      description: 'Surgical disk cleanup for Windows with extension-level control, safe drive wiping, and batch renaming. Reclaim gigabytes while preserving logs and project dependencies.',
+      link: 'https://downloadcleansweep.netlify.app/',
+      downloadUrl: 'https://downloadcleansweep.netlify.app/dist/CleanSweep.exe',
       platform: 'Windows',
-      size: '14 MB'
+      size: '14.3 MB'
     }
   ];
 
