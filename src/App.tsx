@@ -22,12 +22,12 @@ function App() {
         <Layout>
           <Hero />
           <About />
-          <Experience />
           <FeaturedProject />
           <Projects />
-          <Games />
           <DesktopApps />
+          <Games />
           <Certifications />
+          <Experience />
           <RedbubbleShop />
           <Contact />
           <Kiryee />

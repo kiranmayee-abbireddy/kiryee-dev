@@ -76,12 +76,12 @@ html {
 }
 
 /* Universal Section Background */
-.sea section:not(#about):not(#apps):not(.uiverse-showcase) {
+.sea section:not(#about):not(#games):not(.uiverse-showcase) {
   background-color: var(--bg-sand) !important;
 }
 
 /* Specific Section Background Overrides */
-.sea #apps,
+.sea #games,
 .sea .uiverse-showcase {
   background-color: #faf3e8 !important;
   /* Lighter shade for body */

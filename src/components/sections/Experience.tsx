@@ -167,7 +167,7 @@ const Experience: React.FC = () => {
   };
 
   return (
-    <section id="experience" className="py-24 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-850">
+    <section id="experience" className="py-24 bg-white dark:bg-neutral-900">
       <div className="container mx-auto px-6" ref={ref}>
         {/* Storytelling Header */}
         <div className="max-w-4xl mx-auto md:text-center mb-16">

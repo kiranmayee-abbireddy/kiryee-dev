@@ -123,9 +123,9 @@ export default function UiverseGallery() {
                 href={item.uiverseUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center text-sm font-medium text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors gap-1"
+                className="inline-flex items-center justify-center text-sm font-medium text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
               >
-                View on Uiverse <span aria-hidden="true">→</span>
+                View on Uiverse
               </a>
             </div>
           </motion.div>

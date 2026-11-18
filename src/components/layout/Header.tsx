@@ -86,8 +86,8 @@ const Header: React.FC = () => {
     { label: 'About', href: '#about', icon: 'User' },
     { label: 'Featured', href: '#featured-project', icon: 'Star' },
     { label: 'Projects', href: '#projects', icon: 'Briefcase' },
-    { label: 'Games', href: '#games', icon: 'Gamepad2', className: 'hidden xl:inline-block' },
     { label: 'Apps', href: '#apps', icon: 'Layout', className: 'hidden xl:inline-block' },
+    { label: 'Games', href: '#games', icon: 'Gamepad2', className: 'hidden xl:inline-block' },
     { label: 'Certifications', href: '#certifications', icon: 'Award', className: 'hidden lg:inline-block' },
     { label: 'Work with Me', href: '#contact', icon: 'Send' },
   ];

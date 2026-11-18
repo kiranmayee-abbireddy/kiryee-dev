@@ -80,7 +80,7 @@ const Certifications: React.FC = () => {
                   rel="noopener noreferrer"
                   className="text-sm font-medium hover:underline transition-colors inline-block"
                 >
-                  View Certificate →
+                  View Certificate
                 </a>
               </div>
 

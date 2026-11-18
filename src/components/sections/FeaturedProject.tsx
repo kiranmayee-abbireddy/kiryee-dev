@@ -104,38 +104,22 @@ const FeaturedProject: React.FC = () => {
   const [animationData, setAnimationData] = useState<any>(null);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
-  const [shouldPlay, setShouldPlay] = useState(false);
-
   // Fetch JSON
   useEffect(() => {
     fetch('/lumiflow.json')
       .then(res => res.json())
-      .then(setAnimationData)
+      .then(data => {
+        setAnimationData(data);
+      })
       .catch(console.error);
   }, []);
 
-  // Check if section is already in view on mount
+  // Ensure Lottie plays when in view or when animation loads
   useEffect(() => {
-    const element = document.getElementById('featured-project');
-    if (element) {
-      const rect = element.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        setShouldPlay(true);
-      }
-    }
-  }, []);
-
-  // Trigger when intersection changes
-  useEffect(() => {
-    if (inView) setShouldPlay(true);
-  }, [inView]);
-
-  // Play Lottie when JSON loaded and shouldPlay is true
-  useEffect(() => {
-    if (animationData && shouldPlay && lottieRef.current) {
+    if (lottieRef.current) {
       lottieRef.current.play();
     }
-  }, [animationData, shouldPlay]);
+  }, [animationData, inView]);
 
   const keyFeatures = [
     'Quick Logging for moods, habits, tasks, and affirmations',
@@ -268,14 +252,23 @@ const FeaturedProject: React.FC = () => {
             >
               {/* Mobile / small screens */}
               <div className="relative block lg:hidden">
-                <div className="aspect-[4/5] w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden shadow-2xl border border-neutral-200 dark:border-neutral-700">
-                  <iframe
-                    src="https://lumiflow.netlify.app/"
-                    title="LumiFlow - Self-Care Productivity App"
-                    className="w-full h-full border-0"
-                    loading="lazy"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                  />
+                <div className="aspect-[4/5] w-full max-w-md mx-auto lg:max-w-none rounded-2xl overflow-hidden shadow-2xl border border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
+                  {animationData ? (
+                    <Lottie
+                      animationData={animationData}
+                      loop={true}
+                      autoplay={true}
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                  ) : (
+                    <iframe
+                      src="https://lumiflow.netlify.app/"
+                      title="LumiFlow - Self-Care Productivity App"
+                      className="w-full h-full border-0"
+                      loading="lazy"
+                      sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                    />
+                  )}
                 </div>
 
                 {/* Floating elements */}
@@ -297,8 +290,11 @@ const FeaturedProject: React.FC = () => {
                   <Lottie
                     lottieRef={lottieRef}
                     animationData={animationData}
-                    loop
-                    autoplay={false} // manual play
+                    loop={true}
+                    autoplay={true}
+                    onDOMLoaded={() => {
+                      lottieRef.current?.play();
+                    }}
                     style={{ width: '100%', height: '100%' }}
                   />
                 )}
