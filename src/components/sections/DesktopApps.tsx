@@ -50,11 +50,12 @@ const DesktopApps: React.FC = () => {
     },
     {
       id: 4,
-      title: 'Clip Box',
-      description: 'Never lose what you copy! Save, organize, and quickly access text, links, code, and more with customizable categories, themes, and secure storage.',
-      link: '/ClipBox.exe',
+      title: 'ClipBox',
+      description: 'A fast, aesthetic, and privacy-focused clipboard manager for Windows. Silently captures, indexes, and auto-categorizes clipboard snippets with instant search and Fernet AES encryption.',
+      link: 'https://downloadclipbox.netlify.app/',
+      downloadUrl: 'https://downloadclipbox.netlify.app/downloads/ClipBox-Setup-v1.2.0.exe',
       platform: 'Windows',
-      size: '53 MB'
+      size: '19.9 MB'
     },
     {
       id: 5,
